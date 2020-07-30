@@ -1,29 +1,32 @@
 {
-  "name": "responsive-prop",
+  "name": "@dash-ui/responsive",
   "version": "0.1.0",
-  "homepage": "https://github.com/dash-ui/responsive-prop#readme",
-  "repository": "github:dash-ui/responsive-prop",
-  "bugs": "https://github.com/dash-ui/responsive-prop/issues",
+  "homepage": "https://github.com/dash-ui/responsive#readme",
+  "repository": "github:dash-ui/responsive",
+  "bugs": "https://github.com/dash-ui/responsive/issues",
   "author": "Jared Lunde <jared.lunde@gmail.com> (https://jaredLunde.com)",
   "license": "MIT",
-  "description": "A library for adding responsive props to React components with dash-ui",
+  "description": "A library for adding responsive styles to components with dash-ui",
   "keywords": [
-    "react",
-    "react component",
-    "responsive prop"
+    "responsive prop",
+    "dash",
+    "dash ui",
+    "dash responsive props",
+    "dash media query props",
+    "media query props"
   ],
   "main": "dist/main/index.js",
   "module": "dist/module/index.js",
-  "unpkg": "dist/umd/responsive-prop.js",
-  "source": "src/index.tsx",
+  "unpkg": "dist/umd/responsive.js",
+  "source": "src/index.ts",
   "types": "types/index.d.ts",
   "exports": {
     ".": {
       "browser": "./dist/module/index.js",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/main/index.js",
-      "umd": "./dist/umd/responsive-prop.js",
-      "source": "./src/index.tsx",
+      "umd": "./dist/umd/responsive.js",
+      "source": "./src/index.ts",
       "types": "./types/index.d.ts",
       "default": "./dist/main/index.js"
     },
@@ -37,11 +40,12 @@
   ],
   "sideEffects": false,
   "scripts": {
+    "bench": "lundle build -f module -e . && NODE_ENV=production babel-node ./benchmark -x .ts,.js",
     "build": "lundle build",
     "check-types": "lundle check-types",
     "dev": "lundle build -f module,cjs -w",
-    "format": "prettier --write \"{,!(node_modules|dist|coverage)/**/}*.{ts,tsx,js,jsx,md,yml,json}\"",
-    "lint": "eslint . --ext .ts,.tsx",
+    "format": "prettier --write \"{,!(node_modules|dist|coverage)/**/}*.{ts,js,jsx,md,yml,json}\"",
+    "lint": "eslint . --ext .ts",
     "prepublishOnly": "cli-confirm \"Did you run 'yarn release' first? (y/N)\"",
     "prerelease": "npm run validate && npm run build",
     "release": "git add . && standard-version -a",
@@ -55,7 +59,7 @@
     }
   },
   "lint-staged": {
-    "**/*.{ts,tsx,js,jsx}": [
+    "**/*.{ts,js,jsx}": [
       "eslint --fix",
       "prettier --write"
     ],
@@ -93,10 +97,10 @@
       "test"
     ],
     "testMatch": [
-      "<rootDir>/src/**/?(*.)test.{ts,tsx}"
+      "<rootDir>/src/**/?(*.)test.ts"
     ],
     "collectCoverageFrom": [
-      "**/src/**/*.{ts,tsx}"
+      "**/src/**/*.ts"
     ],
     "setupFilesAfterEnv": [
       "./test/setup.js"
@@ -113,15 +117,13 @@
     "bracketSpacing": false
   },
   "devDependencies": {
+    "@babel/node": "^7.10.5",
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
+    "@dash-ui/styles": "^0.8.1",
+    "@essentials/benchmark": "^1.0.7",
     "@testing-library/jest-dom": "latest",
-    "@testing-library/react": "latest",
-    "@testing-library/react-hooks": "latest",
-    "@testing-library/user-event": "latest",
     "@types/jest": "latest",
-    "@types/react": "latest",
-    "@types/react-dom": "latest",
     "babel-jest": "latest",
     "cli-confirm": "latest",
     "cz-conventional-changelog": "latest",
@@ -133,13 +135,13 @@
     "lundle": "latest",
     "prettier": "latest",
     "react": "latest",
-    "react-dom": "latest",
-    "react-test-renderer": "latest",
     "standard-version": "latest",
     "typescript": "latest"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@dash-ui/mq": "^0.4.0"
+  },
   "peerDependencies": {
-    "react": ">=16.8"
+    "@dash-ui/styles": ">=0.8.1"
   }
 }
