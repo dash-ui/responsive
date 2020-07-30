@@ -5,7 +5,7 @@
 > A library for adding responsive styles to components with [dash-ui](https://github.com/dash-ui)
 
 ```sh
-npm i responsive
+npm i @dash-ui/responsive
 ```
 
 <p>
