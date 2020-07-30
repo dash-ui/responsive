@@ -1,6 +1,6 @@
 <hr/>
-
-# @dash-ui/responsive
+<br/>
+<img src='https://github.com/dash-ui/styles/raw/master/assets/logo.png'/>
 
 > A library for adding responsive styles to components with [dash-ui](https://github.com/dash-ui)
 
