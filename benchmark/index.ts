@@ -1,5 +1,6 @@
 import bench from '@essentials/benchmark'
 import {styles} from '@dash-ui/styles'
+// eslint-disable-next-line
 import responsive from '../dist/module'
 
 const responsiveStyle = responsive(styles, {
