@@ -15,15 +15,17 @@ declare function responsive<
 ): {
   <Variant extends string>(style: StyleMap<Variant, Tokens>): ResponsiveStyle<
     Variant,
+    Tokens,
     MQ
   >
   <Variant_1 extends string>(style: Style<Variant_1, Tokens>): ResponsiveStyle<
     Variant_1,
+    Tokens,
     MQ
   >
   <Variant_2 extends unknown>(
     style: ResponsiveCallback<Variant_2, Tokens, MQ>
-  ): ResponsiveStyle<Variant_2, MQ>
+  ): ResponsiveStyleWithCallback<Variant_2, Tokens, MQ>
 }
 export declare type ResponsiveCallback<
   Variant,
@@ -38,8 +40,22 @@ export declare type Responsive<Variant, MQ extends Record<string, string>> =
   | {
       [key in Extract<keyof MQ, string>]?: Variant
     }
-export interface ResponsiveStyle<Variant, MQ extends Record<string, string>> {
+export interface ResponsiveStyle<
+  Variant extends string,
+  Tokens extends DashTokens,
+  MQ extends Record<string, string>
+> {
   (...variants: Responsive<Variant, MQ>[]): string
   css(...variants: Responsive<Variant, MQ>[]): string
+  styles: StyleMap<Variant, Tokens>
+}
+export interface ResponsiveStyleWithCallback<
+  Variant extends unknown,
+  Tokens extends DashTokens,
+  MQ extends Record<string, string>
+> {
+  (...variants: Responsive<Variant, MQ>[]): string
+  css(...variants: Responsive<Variant, MQ>[]): string
+  styles: ResponsiveCallback<Variant, Tokens, MQ>
 }
 export default responsive
