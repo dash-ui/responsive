@@ -23,19 +23,19 @@ function responsive<
 
   function responsiveStyles<Variant extends string>(
     style: StyleMap<Variant, Tokens>
-  ): ResponsiveStyle<Variant, MQ>
+  ): ResponsiveStyle<Variant, Tokens, MQ>
   function responsiveStyles<Variant extends string>(
     style: Style<Variant, Tokens>
-  ): ResponsiveStyle<Variant, MQ>
+  ): ResponsiveStyle<Variant, Tokens, MQ>
   function responsiveStyles<Variant extends unknown>(
     style: ResponsiveCallback<Variant, Tokens, MQ>
-  ): ResponsiveStyle<Variant, MQ>
+  ): ResponsiveStyleWithCallback<Variant, Tokens, MQ>
   function responsiveStyles<Variant extends string>(
     style:
       | Style<Variant, Tokens>
       | StyleMap<Variant, Tokens>
       | ResponsiveCallback<Variant, Tokens, MQ>
-  ) {
+  ): any {
     let styleMap: StyleMap<Variant, Tokens> | undefined
     let defaultStyle: StyleValue<Tokens> | undefined
     // We separate out the default style so that it will only be
@@ -55,11 +55,12 @@ function responsive<
         ? styles(styleMap || {})
         : style
 
-    function css(...variants: Responsive<Variant, MQ>[]) {
+    function css(...variants: (Responsive<Variant, MQ> | undefined)[]) {
       let css = defaultStyle ? compileStyles(defaultStyle, styles.tokens) : ''
 
       for (let i = 0; i < variants.length; i++) {
         const variant = variants[i]
+        if (variant === void 0) continue
 
         if (typeof variant === 'object' && !Array.isArray(variant)) {
           // Media queries
@@ -96,12 +97,15 @@ function responsive<
       return css
     }
 
-    function responsiveStyle(variant: Responsive<Variant, MQ>) {
-      const variantCss = css(variant)
+    function responsiveStyle(
+      ...variants: (Responsive<Variant, MQ> | undefined)[]
+    ) {
+      const variantCss = css(...variants)
       if (!variantCss) return ''
       return one(variantCss)()
     }
 
+    responsiveStyle.styles = 'css' in style ? style.styles : style
     responsiveStyle.css = css
     return responsiveStyle
   }
@@ -154,9 +158,24 @@ export type Responsive<Variant, MQ extends Record<string, string>> =
       [key in Extract<keyof MQ, string>]?: Variant
     }
 
-export interface ResponsiveStyle<Variant, MQ extends Record<string, string>> {
+export interface ResponsiveStyle<
+  Variant extends string,
+  Tokens extends DashTokens,
+  MQ extends Record<string, string>
+> {
   (...variants: Responsive<Variant, MQ>[]): string
   css(...variants: Responsive<Variant, MQ>[]): string
+  styles: StyleMap<Variant, Tokens>
+}
+
+export interface ResponsiveStyleWithCallback<
+  Variant extends unknown,
+  Tokens extends DashTokens,
+  MQ extends Record<string, string>
+> {
+  (...variants: Responsive<Variant, MQ>[]): string
+  css(...variants: Responsive<Variant, MQ>[]): string
+  styles: ResponsiveCallback<Variant, Tokens, MQ>
 }
 
 export default responsive
