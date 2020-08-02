@@ -7,6 +7,7 @@ import type {
   StyleValue,
   StylesOne,
   DashTokens,
+  Falsy,
 } from '@dash-ui/styles'
 
 function responsive<
@@ -163,8 +164,8 @@ export interface ResponsiveStyle<
   Tokens extends DashTokens,
   MQ extends Record<string, string>
 > {
-  (...variants: (Responsive<Variant, MQ> | undefined)[]): string
-  css(...variants: (Responsive<Variant, MQ> | undefined)[]): string
+  (...variants: (Responsive<Falsy | Variant, MQ> | undefined)[]): string
+  css(...variants: (Responsive<Falsy | Variant, MQ> | undefined)[]): string
   styles: StyleMap<Variant, Tokens>
 }
 
