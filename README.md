@@ -69,6 +69,12 @@ const MyComponent = ({display}) => {
 | ---- | ---- | ------- | --------- | ----------- |
 |      |      |         |           |             |
 
+### responsive.lazy()
+
+### responsive.one()
+
+### responsive.cls()
+
 ## LICENSE
 
 MIT

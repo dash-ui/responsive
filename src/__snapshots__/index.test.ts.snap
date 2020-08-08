@@ -1,0 +1,145 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`responsive() should insert class into the dom: flex 1`] = `
+<style
+  data-dash="ui"
+>
+  @media only screen and (min-width:0em){.ui-1ot6yiv{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}}
+</style>
+`;
+
+exports[`responsive() should insert class into the dom: inline-block 1`] = `
+<style
+  data-dash="ui"
+>
+  @media only screen and (min-width:20em){.ui-1ot6yiv{display:inline-block;}}
+</style>
+`;
+
+exports[`responsive.cls() should act like a callback style 1`] = `
+<style
+  data-dash="ui"
+>
+  .ui-1jl79wi{color:var(--color-white);}
+</style>
+`;
+
+exports[`responsive.cls() should act like a string style 1`] = `
+<style
+  data-dash="ui"
+>
+  .ui-9rfate{color:red;}
+</style>
+`;
+
+exports[`responsive.cls() should act like a template literal style 1`] = `
+<style
+  data-dash="ui"
+>
+  .ui-9rfate{color:red;}
+</style>
+`;
+
+exports[`responsive.cls() should act like an object style 1`] = `
+<style
+  data-dash="ui"
+>
+  .ui-9rfate{color:red;}
+</style>
+`;
+
+exports[`responsive.cls() should create a responsive style: black 1`] = `
+<style
+  data-dash="ui"
+>
+  @media only screen and (min-width:20em){.ui-pthova{color:black;}}
+</style>
+`;
+
+exports[`responsive.cls() should create a responsive style: red 1`] = `
+<style
+  data-dash="ui"
+>
+  @media only screen and (min-width:50em){.ui-pthova{color:red;}}
+</style>
+`;
+
+exports[`responsive.cls() should create a responsive style: white 1`] = `
+<style
+  data-dash="ui"
+>
+  @media only screen and (min-width:0em){.ui-pthova{color:var(--color-white);}}
+</style>
+`;
+
+exports[`responsive.lazy() should insert into the dom: flex 1`] = `
+<style
+  data-dash="ui"
+>
+  @media only screen and (min-width:0em){.ui-1atol71{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}}
+</style>
+`;
+
+exports[`responsive.lazy() should insert into the dom: inline-block 1`] = `
+<style
+  data-dash="ui"
+>
+  @media only screen and (min-width:20em){.ui-1atol71{display:inline-block;}}
+</style>
+`;
+
+exports[`responsive.lazy() should insert into the dom: inline-flex 1`] = `
+<style
+  data-dash="ui"
+>
+  @media only screen and (min-width:50em){.ui-1atol71{display:-webkit-inline-box;display:-webkit-inline-flex;display:-ms-inline-flexbox;display:inline-flex;}}
+</style>
+`;
+
+exports[`responsive.one() should act like a callback style 1`] = `
+<style
+  data-dash="ui"
+>
+  .ui-1jl79wi{color:var(--color-white);}
+</style>
+`;
+
+exports[`responsive.one() should act like a string style 1`] = `
+<style
+  data-dash="ui"
+>
+  .ui-9rfate{color:red;}
+</style>
+`;
+
+exports[`responsive.one() should act like a template literal style 1`] = `
+<style
+  data-dash="ui"
+>
+  .ui-9rfate{color:red;}
+</style>
+`;
+
+exports[`responsive.one() should act like an object style 1`] = `
+<style
+  data-dash="ui"
+>
+  .ui-9rfate{color:red;}
+</style>
+`;
+
+exports[`responsive.one() should create a responsive style: desktop 1`] = `
+<style
+  data-dash="ui"
+>
+  @media only screen and (min-width:50em){.ui-1ngtx60{color:red;}}
+</style>
+`;
+
+exports[`responsive.one() should create a responsive style: phone 1`] = `
+<style
+  data-dash="ui"
+>
+  @media only screen and (min-width:0em){.ui-1ngtx60{color:red;}}
+</style>
+`;
