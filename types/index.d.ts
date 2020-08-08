@@ -1,10 +1,12 @@
 import type {
   Styles,
-  Style,
   StyleMap,
   StyleValue,
+  StyleCallback,
+  StyleObject,
   DashTokens,
   Falsy,
+  LazyValue,
 } from '@dash-ui/styles'
 declare function responsive<
   Tokens extends DashTokens,
@@ -13,50 +15,106 @@ declare function responsive<
 >(
   styles: Styles<Tokens, ThemeNames>,
   mediaQueries: MQ
-): {
-  <Variant extends string>(style: StyleMap<Variant, Tokens>): ResponsiveStyle<
-    Variant,
-    Tokens,
-    MQ
-  >
-  <Variant_1 extends string>(style: Style<Variant_1, Tokens>): ResponsiveStyle<
-    Variant_1,
-    Tokens,
-    MQ
-  >
-  <Variant_2 extends unknown>(
-    style: ResponsiveCallback<Variant_2, Tokens, MQ>
-  ): ResponsiveStyleWithCallback<Variant_2, Tokens, MQ>
-}
-export declare type ResponsiveCallback<
-  Variant,
+): ResponsiveStyles<Tokens, MQ, ThemeNames>
+export interface ResponsiveStyles<
   Tokens extends DashTokens,
+  MQ extends Record<string, string>,
+  ThemeNames extends string
+> extends Styles<Tokens, ThemeNames> {
+  <Variant extends string>(
+    styleMap: StyleMap<Variant, Tokens>
+  ): ResponsiveStyle<Variant, Tokens, MQ>
+  lazy<Variant extends LazyValue>(
+    lazyFn: ResponsiveLazyCallback<Variant, Tokens, MQ>
+  ): ResponsiveLazy<Variant, MQ>
+  one(
+    literals:
+      | TemplateStringsArray
+      | string
+      | StyleObject
+      | StyleCallback<Tokens>,
+    ...placeholders: string[]
+  ): ResponsiveOne<MQ>
+  cls(
+    style:
+      | TemplateStringsArray
+      | string
+      | StyleObject
+      | StyleCallback<Tokens>
+      | Responsive<string | StyleObject | StyleCallback<Tokens>, MQ>
+  ): string
+}
+export declare type Responsive<Variant, MQ extends Record<string, string>> = {
+  [key in Extract<keyof MQ, string>]?: Variant
+}
+export declare type ResponsiveStyleArguments<
+  Variant extends string,
   MQ extends Record<string, string>
 > = (
-  queryValue: Variant,
-  queryName: Extract<keyof MQ, string> | 'default'
-) => StyleValue<Tokens>
-export declare type Responsive<Variant, MQ extends Record<string, string>> =
   | Variant
+  | Falsy
   | {
-      [key in Extract<keyof MQ, string>]?: Variant
+      [Name in Variant]?: boolean | null | undefined | string | number
     }
+  | Responsive<Variant | Falsy, MQ>
+  | Responsive<
+      {
+        [Name in Variant]?: boolean | null | undefined | string | number
+      },
+      MQ
+    >
+)[]
 export interface ResponsiveStyle<
   Variant extends string,
   Tokens extends DashTokens,
   MQ extends Record<string, string>
 > {
-  (...variants: (Responsive<Falsy | Variant, MQ> | undefined)[]): string
-  css(...variants: (Responsive<Falsy | Variant, MQ> | undefined)[]): string
+  (...variants: ResponsiveStyleArguments<Variant, MQ>): string
+  css(...variants: ResponsiveStyleArguments<Variant, MQ>): string
   styles: StyleMap<Variant, Tokens>
 }
-export interface ResponsiveStyleWithCallback<
-  Variant extends unknown,
+export declare type ResponsiveLazy<
+  Value extends LazyValue,
+  MQ extends Record<string, string>
+> = {
+  (value?: Value | Responsive<Value, MQ>): string
+  /**
+   * A method that returns indeterminate CSS strings based on the value
+   * when called.
+   *
+   * @param value A JSON serializable value to create indeterminate
+   *   styles from
+   */
+  css(value?: Value | Responsive<Value, MQ>): string
+}
+export declare type ResponsiveLazyCallback<
+  Variant extends LazyValue,
   Tokens extends DashTokens,
   MQ extends Record<string, string>
-> {
-  (...variants: (Responsive<Variant, MQ> | undefined)[]): string
-  css(...variants: (Responsive<Variant, MQ> | undefined)[]): string
-  styles: ResponsiveCallback<Variant, Tokens, MQ>
+> = (
+  value: Variant,
+  queryName: 'default' | Extract<keyof MQ, string>
+) => StyleValue<Tokens>
+declare type ResponsiveOne<MQ extends Record<string, string>> = {
+  (
+    createClassName?:
+      | boolean
+      | number
+      | string
+      | null
+      | Responsive<boolean | number | string | null, MQ>
+  ): string
+  /**
+   * A method that returns a CSS string when the first argument
+   * is not falsy
+   */
+  css(
+    createCss?:
+      | boolean
+      | number
+      | string
+      | null
+      | Responsive<boolean | number | string | null, MQ>
+  ): string
 }
 export default responsive
