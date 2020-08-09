@@ -99,6 +99,7 @@ function responsive<
   ) {
     const oneCache = new Map<string, StylesOne>()
     const responsiveLazy: ResponsiveLazy<Variant, MQ> = (variant) => {
+      if (variant === void 0) return ''
       const key = JSON.stringify(variant)
       let cachedOne = oneCache.get(key)
 
@@ -111,6 +112,8 @@ function responsive<
     }
 
     responsiveLazy.css = (variant) => {
+      if (variant === void 0) return ''
+
       if (
         typeof variant === 'object' &&
         variant !== null &&
