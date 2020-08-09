@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/dash-ui/responsive/compare/v0.2.0...v0.2.1) (2020-08-09)
+
+### Bug Fixes
+
+- **types:** export ResponsiveOne type ([f5a9083](https://github.com/dash-ui/responsive/commit/f5a908377952104e6e2251e7ff97f0d22ec174fe))
+
 ## [0.2.0](https://github.com/dash-ui/responsive/compare/v0.1.3...v0.2.0) (2020-08-08)
 
 ### ⚠ BREAKING CHANGES

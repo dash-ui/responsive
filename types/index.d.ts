@@ -95,7 +95,7 @@ export declare type ResponsiveLazyCallback<
   value: Variant,
   queryName: 'default' | Extract<keyof MQ, string>
 ) => StyleValue<Tokens>
-declare type ResponsiveOne<MQ extends Record<string, string>> = {
+export declare type ResponsiveOne<MQ extends Record<string, string>> = {
   (
     createClassName?:
       | boolean
