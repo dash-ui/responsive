@@ -303,7 +303,7 @@ export type ResponsiveLazyCallback<
   queryName: 'default' | Extract<keyof MQ, string>
 ) => StyleValue<Tokens>
 
-type ResponsiveOne<MQ extends Record<string, string>> = {
+export type ResponsiveOne<MQ extends Record<string, string>> = {
   (
     createClassName?:
       | boolean
