@@ -1,385 +1,389 @@
-import {createStyles} from '@dash-ui/styles'
-import responsive from './index'
+import { createStyles } from "@dash-ui/styles";
+import responsive from "./index";
 
 const mediaQueries = {
-  phone: 'only screen and (min-width: 0em)',
-  tablet: 'only screen and (min-width: 20em)',
-  desktop: 'only screen and (min-width: 50em)',
-} as const
+  phone: "only screen and (min-width: 0em)",
+  tablet: "only screen and (min-width: 20em)",
+  desktop: "only screen and (min-width: 50em)",
+} as const;
 
 let styles = createStyles({
   tokens: {
     color: {
-      white: '#fff',
+      white: "#fff",
     },
   },
-})
+});
 
-let responsiveStyles = responsive(styles, mediaQueries)
+let responsiveStyles = responsive(styles, mediaQueries);
 
 beforeEach(() => {
   styles = createStyles({
     tokens: {
       color: {
-        white: '#fff',
+        white: "#fff",
       },
     },
-  })
-  responsiveStyles = responsive(styles, mediaQueries)
-})
+  });
+  responsiveStyles = responsive(styles, mediaQueries);
+});
 
 afterEach(() => {
-  document.getElementsByTagName('html')[0].innerHTML = ''
-})
+  document.getElementsByTagName("html")[0].innerHTML = "";
+});
 
-describe('responsive()', () => {
-  it('should have the same API as styles()', () => {
+describe("responsive()", () => {
+  it("should have the same API as styles()", () => {
     expect(Object.keys(responsiveStyles).sort()).toEqual(
       Object.keys(styles).sort()
-    )
-  })
+    );
+  });
 
-  it('should add styles in order', () => {
+  it("should add styles in order", () => {
     const responsiveDisplay = responsiveStyles({
       default: {
-        display: 'block',
+        display: "block",
       },
       flex: {
-        display: 'flex',
+        display: "flex",
       },
       inlineBlock: {
-        display: 'inline-block',
+        display: "inline-block",
       },
-    })
+    });
 
     expect(
-      responsiveDisplay.css('flex', {phone: 'inlineBlock'}, {flex: true})
+      responsiveDisplay.css("flex", { phone: "inlineBlock" }, { flex: true })
     ).toBe(
       `display:block;display:flex;@media ${mediaQueries.phone}{display:inline-block;}display:flex;`
-    )
-  })
+    );
+  });
 
-  it('should provide tokens', () => {
+  it("should provide tokens", () => {
     const responsiveDisplay = responsiveStyles({
-      default: ({color}) => ({color: color.white}),
-      backgroundColor: ({color}) => ({backgroundColor: color.white}),
-    })
-    expect(responsiveDisplay.css({phone: 'backgroundColor'})).toBe(
+      default: ({ color }) => ({ color: color.white }),
+      backgroundColor: ({ color }) => ({ backgroundColor: color.white }),
+    });
+    expect(responsiveDisplay.css({ phone: "backgroundColor" })).toBe(
       `color:var(--color-white);@media ${mediaQueries.phone}{background-color:var(--color-white);}`
-    )
-  })
+    );
+  });
 
-  it('should return add just the default', () => {
+  it("should return add just the default", () => {
     const responsiveDisplay = responsiveStyles({
-      default: ({color}) => ({color: color.white}),
-    })
-    expect(responsiveDisplay.css()).toBe('color:var(--color-white);')
-  })
+      default: ({ color }) => ({ color: color.white }),
+    });
+    expect(responsiveDisplay.css()).toBe("color:var(--color-white);");
+  });
 
-  it('should return empty string for no variant match', () => {
+  it("should return empty string for no variant match", () => {
     const responsiveDisplay = responsiveStyles({
-      backgroundColor: ({color}) => ({backgroundColor: color.white}),
-    })
-    expect(responsiveDisplay.css()).toBe('')
-    expect(responsiveDisplay()).toBe('')
-  })
+      backgroundColor: ({ color }) => ({ backgroundColor: color.white }),
+    });
+    expect(responsiveDisplay.css()).toBe("");
+    expect(responsiveDisplay()).toBe("");
+  });
 
-  it('should work with style map', () => {
+  it("should work with style map", () => {
     const responsiveDisplay = responsiveStyles({
       default: {
-        display: 'block',
+        display: "block",
       },
       flex: {
-        display: 'flex',
+        display: "flex",
       },
       inlineBlock: {
-        display: 'inline-block',
+        display: "inline-block",
       },
-    })
+    });
 
-    expect(responsiveDisplay.css('flex')).toBe('display:block;display:flex;')
-  })
+    expect(responsiveDisplay.css("flex")).toBe("display:block;display:flex;");
+  });
 
-  it('should work without default in style map', () => {
+  it("should work without default in style map", () => {
     const responsiveDisplay = responsiveStyles({
       flex: {
-        display: 'flex',
+        display: "flex",
       },
       inlineBlock: {
-        display: 'inline-block',
+        display: "inline-block",
       },
-    })
+    });
 
-    expect(responsiveDisplay.css('flex')).toBe('display:flex;')
-  })
+    expect(responsiveDisplay.css("flex")).toBe("display:flex;");
+  });
 
-  it('should add media queries to style map', () => {
+  it("should add media queries to style map", () => {
     const responsiveDisplay = responsiveStyles({
       flex: {
-        display: 'flex',
+        display: "flex",
       },
       inlineBlock: {
-        display: 'inline-block',
+        display: "inline-block",
       },
-    })
+    });
 
-    expect(responsiveDisplay.css({tablet: 'inlineBlock', phone: 'flex'})).toBe(
+    expect(
+      responsiveDisplay.css({ tablet: "inlineBlock", phone: "flex" })
+    ).toBe(
       `@media ${mediaQueries.phone}{display:flex;}@media ${mediaQueries.tablet}{display:inline-block;}`
-    )
-  })
+    );
+  });
 
-  it('should return empty string for misses', () => {
+  it("should return empty string for misses", () => {
     const responsiveDisplay = responsiveStyles({
       flex: {
-        display: 'flex',
+        display: "flex",
       },
       inlineBlock: {
-        display: 'inline-block',
+        display: "inline-block",
       },
-    })
+    });
 
-    expect(responsiveDisplay()).toBe('')
-  })
+    expect(responsiveDisplay()).toBe("");
+  });
 
-  it('should insert class into the dom', () => {
+  it("should insert class into the dom", () => {
     const responsiveDisplay = responsiveStyles({
       flex: {
-        display: 'flex',
+        display: "flex",
       },
       inlineBlock: {
-        display: 'inline-block',
+        display: "inline-block",
       },
-    })
+    });
 
     responsiveDisplay({
-      tablet: 'inlineBlock',
-      phone: 'flex',
-    })
+      tablet: "inlineBlock",
+      phone: "flex",
+    });
 
-    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(3)
+    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(3);
     expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot(
-      'flex'
-    )
+      "flex"
+    );
     expect(document.querySelectorAll(`style[data-dash]`)[2]).toMatchSnapshot(
-      'inline-block'
-    )
-  })
-})
+      "inline-block"
+    );
+  });
+});
 
-describe('responsive.lazy()', () => {
-  it('should insert into the dom', () => {
+describe("responsive.lazy()", () => {
+  it("should insert into the dom", () => {
     const responsiveDisplay = responsiveStyles.lazy((value: string) => ({
       display: value,
-    }))
+    }));
 
     responsiveDisplay({
-      tablet: 'inline-block',
-      phone: 'flex',
-      desktop: 'inline-flex',
-    })
+      tablet: "inline-block",
+      phone: "flex",
+      desktop: "inline-flex",
+    });
 
-    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(4)
+    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(4);
     expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot(
-      'flex'
-    )
+      "flex"
+    );
     expect(document.querySelectorAll(`style[data-dash]`)[2]).toMatchSnapshot(
-      'inline-block'
-    )
+      "inline-block"
+    );
     expect(document.querySelectorAll(`style[data-dash]`)[3]).toMatchSnapshot(
-      'inline-flex'
-    )
-  })
+      "inline-flex"
+    );
+  });
 
-  it('should add media queries to callback', () => {
+  it("should add media queries to callback", () => {
     const responsiveDisplay = responsiveStyles.lazy((value: string) => ({
       display: value,
-    }))
+    }));
 
-    expect(responsiveDisplay.css({tablet: 'inline-block', phone: 'flex'})).toBe(
+    expect(
+      responsiveDisplay.css({ tablet: "inline-block", phone: "flex" })
+    ).toBe(
       `@media ${mediaQueries.phone}{display:flex;}@media ${mediaQueries.tablet}{display:inline-block;}`
-    )
-  })
+    );
+  });
 
-  it('should provide query name to callback', () => {
+  it("should provide query name to callback", () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const responsiveCallback = jest.fn((value, queryName) => ({
       display: value,
-    }))
-    const responsiveDisplay = responsiveStyles.lazy(responsiveCallback)
+    }));
+    const responsiveDisplay = responsiveStyles.lazy(responsiveCallback);
 
-    responsiveDisplay.css({phone: 'flex'})
-    expect(responsiveCallback).toBeCalledWith('flex', 'phone')
+    responsiveDisplay.css({ phone: "flex" });
+    expect(responsiveCallback).toBeCalledWith("flex", "phone");
 
-    responsiveDisplay.css('block')
-    expect(responsiveCallback).toBeCalledWith('block', 'default')
-  })
+    responsiveDisplay.css("block");
+    expect(responsiveCallback).toBeCalledWith("block", "default");
+  });
 
-  it('should provide tokens to callback', () => {
+  it("should provide tokens to callback", () => {
     const responsiveDisplay = responsiveStyles.lazy(
-      (value: 'white') => (tokens) => ({
+      (value: "white") => (tokens) => ({
         color: tokens.color[value],
       })
-    )
+    );
 
-    expect(responsiveDisplay.css({phone: 'white'})).toBe(
+    expect(responsiveDisplay.css({ phone: "white" })).toBe(
       `@media ${mediaQueries.phone}{color:var(--color-white);}`
-    )
-  })
-})
+    );
+  });
+});
 
-describe('responsive.one()', () => {
-  it('should not insert class', () => {
+describe("responsive.one()", () => {
+  it("should not insert class", () => {
     expect(
       responsiveStyles.one`
         color: red;
       `(false)
-    ).toBe('')
+    ).toBe("");
     // This would be 2 if the class existed
-    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(1)
-  })
+    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(1);
+  });
 
-  it('should not create css', () => {
+  it("should not create css", () => {
     expect(
       responsiveStyles.one`
         color: red;
       `.css(false)
-    ).toBe('')
-  })
+    ).toBe("");
+  });
 
-  it('should act like a template literal style', () => {
+  it("should act like a template literal style", () => {
     expect(
       typeof responsiveStyles.one`
         color: red;
       `()
-    ).toBe('string')
+    ).toBe("string");
 
-    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(2)
-    expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot()
-  })
+    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(2);
+    expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot();
+  });
 
-  it('should act like a string style', () => {
+  it("should act like a string style", () => {
     expect(
       typeof responsiveStyles.one(`
         color: red;
       `)()
-    ).toBe('string')
+    ).toBe("string");
 
-    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(2)
-    expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot()
-  })
+    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(2);
+    expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot();
+  });
 
-  it('should act like an object style', () => {
+  it("should act like an object style", () => {
     expect(
       typeof responsiveStyles.one({
-        color: 'red',
+        color: "red",
       })()
-    ).toBe('string')
+    ).toBe("string");
 
-    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(2)
-    expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot()
-  })
+    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(2);
+    expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot();
+  });
 
-  it('should act like a callback style', () => {
+  it("should act like a callback style", () => {
     expect(
-      typeof responsiveStyles.one(({color}) => ({
+      typeof responsiveStyles.one(({ color }) => ({
         color: color.white,
       }))()
-    ).toBe('string')
+    ).toBe("string");
 
-    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(2)
-    expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot()
-  })
+    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(2);
+    expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot();
+  });
 
-  it('should create a responsive style', () => {
+  it("should create a responsive style", () => {
     const one = responsiveStyles.one`
       color: red;
-    `
+    `;
 
     one({
       phone: true,
       tablet: false,
       desktop: true,
-    })
+    });
 
-    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(3)
+    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(3);
     expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot(
-      'phone'
-    )
+      "phone"
+    );
     expect(document.querySelectorAll(`style[data-dash]`)[2]).toMatchSnapshot(
-      'desktop'
-    )
-  })
-})
+      "desktop"
+    );
+  });
+});
 
-describe('responsive.cls()', () => {
-  it('should act like a template literal style', () => {
+describe("responsive.cls()", () => {
+  it("should act like a template literal style", () => {
     expect(
       typeof responsiveStyles.cls`
         color: red;
       `
-    ).toBe('string')
+    ).toBe("string");
 
-    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(2)
-    expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot()
-  })
+    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(2);
+    expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot();
+  });
 
-  it('should act like a string style', () => {
+  it("should act like a string style", () => {
     expect(
       typeof responsiveStyles.cls(`
         color: red;
       `)
-    ).toBe('string')
+    ).toBe("string");
 
-    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(2)
-    expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot()
-  })
+    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(2);
+    expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot();
+  });
 
-  it('should act like an object style', () => {
+  it("should act like an object style", () => {
     expect(
       typeof responsiveStyles.cls({
-        color: 'red',
+        color: "red",
       })
-    ).toBe('string')
+    ).toBe("string");
 
-    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(2)
-    expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot()
-  })
+    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(2);
+    expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot();
+  });
 
-  it('should act like a callback style', () => {
+  it("should act like a callback style", () => {
     expect(
-      typeof responsiveStyles.cls(({color}) => ({
+      typeof responsiveStyles.cls(({ color }) => ({
         color: color.white,
       }))
-    ).toBe('string')
+    ).toBe("string");
 
-    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(2)
-    expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot()
-  })
+    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(2);
+    expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot();
+  });
 
-  it('should create a responsive style', () => {
+  it("should create a responsive style", () => {
     expect(
       typeof responsiveStyles.cls({
         desktop: `
           color: red;
         `,
-        phone: ({color}) => ({
+        phone: ({ color }) => ({
           color: color.white,
         }),
         tablet: {
-          color: 'black',
+          color: "black",
         },
       })
-    ).toBe('string')
+    ).toBe("string");
 
-    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(4)
+    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(4);
     expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot(
-      'white'
-    )
+      "white"
+    );
     expect(document.querySelectorAll(`style[data-dash]`)[2]).toMatchSnapshot(
-      'black'
-    )
+      "black"
+    );
     expect(document.querySelectorAll(`style[data-dash]`)[3]).toMatchSnapshot(
-      'red'
-    )
-  })
-})
+      "red"
+    );
+  });
+});

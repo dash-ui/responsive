@@ -1,16 +1,16 @@
-import {compileStyles} from '@dash-ui/styles'
-import dashMq from '@dash-ui/mq'
+import dashMq from "@dash-ui/mq";
+import { compileStyles } from "@dash-ui/styles";
 import type {
-  Styles,
-  StyleMap,
-  StyleValue,
-  StyleCallback,
-  StyleObject,
-  StylesOne,
   DashTokens,
   Falsy,
   LazyValue,
-} from '@dash-ui/styles'
+  StyleCallback,
+  StyleMap,
+  StyleObject,
+  Styles,
+  StylesOne,
+  StyleValue,
+} from "@dash-ui/styles";
 
 function responsive<
   Tokens extends DashTokens,
@@ -20,10 +20,10 @@ function responsive<
   const mediaQueryKeys = Object.keys(mediaQueries) as Extract<
     keyof MQ,
     string
-  >[]
-  const mq = dashMq<Tokens>(mediaQueries)
+  >[];
+  const mq = dashMq<Tokens>(mediaQueries);
   function isMediaQuery(variant: Record<string, any>) {
-    return mediaQueryKeys.some((key) => key in variant)
+    return mediaQueryKeys.some((key) => key in variant);
   }
 
   const responsiveStyles: ResponsiveStyles<Tokens, MQ, ThemeNames> = <
@@ -33,186 +33,188 @@ function responsive<
   ) => {
     // We separate out the default style so that it will only be
     // applied one time
-    const {default: defaultStyle, ...other} = styleMap
+    const { default: defaultStyle, ...other } = styleMap;
     const defaultCss = defaultStyle
       ? compileStyles(defaultStyle, styles.tokens)
-      : ''
-    const style = styles(other as any)
+      : "";
+    const style = styles(other as any);
 
     function css(...variants: ResponsiveStyleArguments<Variant, MQ>) {
-      let css = defaultCss
+      let css = defaultCss;
 
       for (let i = 0; i < variants.length; i++) {
-        const variant = variants[i]
-        if (variant === void 0) continue
+        const variant = variants[i];
+        if (variant === void 0) continue;
 
         if (
-          typeof variant === 'object' &&
+          typeof variant === "object" &&
           variant !== null &&
           isMediaQuery(variant)
         ) {
           // Media queries
-          const mqs: Partial<Record<keyof MQ, StyleValue<Tokens>>> = {}
+          const mqs: Partial<Record<keyof MQ, StyleValue<Tokens>>> = {};
 
           for (let i = 0; i < mediaQueryKeys.length; i++) {
-            const queryName = mediaQueryKeys[i]
-            const queryValue = (variant as Responsive<Variant, MQ>)[queryName]
+            const queryName = mediaQueryKeys[i];
+            const queryValue = (variant as Responsive<Variant, MQ>)[queryName];
             if (queryValue !== void 0) {
-              mqs[queryName] = style.css(queryValue)
+              mqs[queryName] = style.css(queryValue);
             }
           }
 
-          css += compileStyles(mq(mqs), styles.tokens)
+          css += compileStyles(mq(mqs), styles.tokens);
         } else {
-          css += style.css(variant as any)
+          css += style.css(variant as any);
         }
       }
 
-      return css
+      return css;
     }
 
     const responsiveStyle: ResponsiveStyle<Variant, Tokens, MQ> = (
       ...variants: ResponsiveStyleArguments<Variant, MQ>
     ) => {
-      const variantCss = css(...variants)
-      if (!variantCss) return ''
-      return styles.cls(variantCss)
-    }
+      const variantCss = css(...variants);
+      if (!variantCss) return "";
+      return styles.cls(variantCss);
+    };
 
-    responsiveStyle.styles = 'css' in style ? style.styles : style
-    responsiveStyle.css = css
-    return responsiveStyle
-  }
+    responsiveStyle.styles = "css" in style ? style.styles : style;
+    responsiveStyle.css = css;
+    return responsiveStyle;
+  };
 
-  responsiveStyles.join = styles.join
-  responsiveStyles.keyframes = styles.keyframes
-  responsiveStyles.insertGlobal = styles.insertGlobal
-  responsiveStyles.insertTokens = styles.insertTokens
-  responsiveStyles.insertThemes = styles.insertThemes
-  responsiveStyles.theme = styles.theme
-  responsiveStyles.hash = styles.hash
-  responsiveStyles.tokens = styles.tokens
-  responsiveStyles.dash = styles.dash
+  responsiveStyles.join = styles.join;
+  responsiveStyles.keyframes = styles.keyframes;
+  responsiveStyles.insertGlobal = styles.insertGlobal;
+  responsiveStyles.insertTokens = styles.insertTokens;
+  responsiveStyles.insertThemes = styles.insertThemes;
+  responsiveStyles.theme = styles.theme;
+  responsiveStyles.hash = styles.hash;
+  responsiveStyles.tokens = styles.tokens;
+  responsiveStyles.dash = styles.dash;
 
   responsiveStyles.lazy = function <Variant extends LazyValue>(
     lazyFn: ResponsiveLazyCallback<Variant, Tokens, MQ>
   ) {
-    const oneCache = new Map<string, StylesOne>()
+    const oneCache = new Map<string, StylesOne>();
     const responsiveLazy: ResponsiveLazy<Variant, MQ> = (variant) => {
-      const key = JSON.stringify(variant)
-      let cachedOne = oneCache.get(key)
+      const key = JSON.stringify(variant);
+      let cachedOne = oneCache.get(key);
 
       if (!cachedOne) {
-        cachedOne = styles.one(responsiveLazy.css(variant))
-        oneCache.set(key, cachedOne)
+        cachedOne = styles.one(responsiveLazy.css(variant));
+        oneCache.set(key, cachedOne);
       }
 
-      return cachedOne()
-    }
+      return cachedOne();
+    };
 
     responsiveLazy.css = (variant) => {
       if (
-        typeof variant === 'object' &&
+        typeof variant === "object" &&
         variant !== null &&
         isMediaQuery(variant as Responsive<any, MQ>)
       ) {
         // Media queries
-        const mqs: Partial<Record<keyof MQ, StyleValue<Tokens>>> = {}
+        const mqs: Partial<Record<keyof MQ, StyleValue<Tokens>>> = {};
         return compileStyles(
           mq(
             mediaQueryKeys.reduce((acc, queryName) => {
-              const queryValue = (variant as Responsive<Variant, MQ>)[queryName]
+              const queryValue = (variant as Responsive<Variant, MQ>)[
+                queryName
+              ];
               if (queryValue !== void 0) {
                 acc[queryName] = compileStyles(
                   lazyFn(queryValue as any, queryName),
                   styles.tokens
-                )
+                );
               }
-              return acc
+              return acc;
             }, mqs)
           ),
           styles.tokens
-        )
+        );
       }
 
-      return compileStyles(lazyFn(variant as any, 'default'), styles.tokens)
-    }
+      return compileStyles(lazyFn(variant as any, "default"), styles.tokens);
+    };
 
-    return responsiveLazy
-  }
+    return responsiveLazy;
+  };
 
   responsiveStyles.one = function (...args) {
     // eslint-disable-next-line prefer-rest-params
-    const one = styles.one(...args)
-    const oneCache = new Map<string, StylesOne>()
+    const one = styles.one(...args);
+    const oneCache = new Map<string, StylesOne>();
     const responsiveOne: ResponsiveOne<MQ> = (createClassName) => {
-      if (!createClassName && createClassName !== void 0) return ''
-      if (typeof createClassName === 'object') {
-        const key = JSON.stringify(createClassName)
-        let cachedOne = oneCache.get(key)
+      if (!createClassName && createClassName !== void 0) return "";
+      if (typeof createClassName === "object") {
+        const key = JSON.stringify(createClassName);
+        let cachedOne = oneCache.get(key);
 
         if (!cachedOne) {
-          cachedOne = styles.one(responsiveOne.css(createClassName))
-          oneCache.set(key, cachedOne)
+          cachedOne = styles.one(responsiveOne.css(createClassName));
+          oneCache.set(key, cachedOne);
         }
 
-        return cachedOne()
+        return cachedOne();
       } else {
-        return one()
+        return one();
       }
-    }
+    };
 
     responsiveOne.css = (createCss) => {
-      if (typeof createCss === 'object' && createCss !== null) {
+      if (typeof createCss === "object" && createCss !== null) {
         // Media queries
-        const mqs: Partial<Record<keyof MQ, StyleValue<Tokens>>> = {}
+        const mqs: Partial<Record<keyof MQ, StyleValue<Tokens>>> = {};
         return compileStyles(
           mq(
             mediaQueryKeys.reduce((acc, queryName) => {
-              const queryValue = createCss[queryName]
+              const queryValue = createCss[queryName];
               if (queryValue) {
-                acc[queryName] = one.css(queryValue)
+                acc[queryName] = one.css(queryValue);
               }
-              return acc
+              return acc;
             }, mqs)
           ),
           styles.tokens
-        )
+        );
       }
 
-      return one.css(createCss)
-    }
+      return one.css(createCss);
+    };
 
-    return responsiveOne
-  }
+    return responsiveOne;
+  };
 
   responsiveStyles.cls = function (...args) {
-    const maybeResponsiveStyle = args[0]
+    const maybeResponsiveStyle = args[0];
     if (
-      typeof maybeResponsiveStyle === 'object' &&
+      typeof maybeResponsiveStyle === "object" &&
       maybeResponsiveStyle !== null &&
       !Array.isArray(maybeResponsiveStyle) &&
       isMediaQuery(maybeResponsiveStyle)
     ) {
-      const mqs: Partial<Record<keyof MQ, StyleValue<Tokens>>> = {}
+      const mqs: Partial<Record<keyof MQ, StyleValue<Tokens>>> = {};
 
       return styles.cls(
         mq(
           mediaQueryKeys.reduce((acc, queryName) => {
-            const queryValue = (maybeResponsiveStyle as any)[queryName]
+            const queryValue = (maybeResponsiveStyle as any)[queryName];
             if (queryValue !== void 0) {
-              acc[queryName] = queryValue
+              acc[queryName] = queryValue;
             }
-            return acc
+            return acc;
           }, mqs)
         )
-      )
+      );
     }
 
-    return (styles.cls as any)(...args)
-  }
+    return (styles.cls as any)(...args);
+  };
 
-  return responsiveStyles
+  return responsiveStyles;
 }
 
 export interface ResponsiveStyles<
@@ -222,11 +224,11 @@ export interface ResponsiveStyles<
 > extends Styles<Tokens, ThemeNames> {
   <Variant extends string>(
     styleMap: StyleMap<Variant, Tokens>
-  ): ResponsiveStyle<Variant, Tokens, MQ>
+  ): ResponsiveStyle<Variant, Tokens, MQ>;
 
   lazy<Variant extends LazyValue>(
     lazyFn: ResponsiveLazyCallback<Variant, Tokens, MQ>
-  ): ResponsiveLazy<Variant, MQ>
+  ): ResponsiveLazy<Variant, MQ>;
 
   one(
     literals:
@@ -235,7 +237,7 @@ export interface ResponsiveStyles<
       | StyleObject
       | StyleCallback<Tokens>,
     ...placeholders: string[]
-  ): ResponsiveOne<MQ>
+  ): ResponsiveOne<MQ>;
 
   cls(
     style:
@@ -244,12 +246,12 @@ export interface ResponsiveStyles<
       | StyleObject
       | StyleCallback<Tokens>
       | Responsive<string | StyleObject | StyleCallback<Tokens>, MQ>
-  ): string
+  ): string;
 }
 
 export type Responsive<Variant, MQ extends Record<string, string>> = {
-  [key in Extract<keyof MQ, string>]?: Variant
-}
+  [key in Extract<keyof MQ, string>]?: Variant;
+};
 
 export type ResponsiveStyleArguments<
   Variant extends string,
@@ -258,41 +260,41 @@ export type ResponsiveStyleArguments<
   | Variant
   | Falsy
   | {
-      [Name in Variant]?: boolean | null | undefined | string | number
+      [Name in Variant]?: boolean | null | undefined | string | number;
     }
   | Responsive<Variant | Falsy, MQ>
   | Responsive<
       {
-        [Name in Variant]?: boolean | null | undefined | string | number
+        [Name in Variant]?: boolean | null | undefined | string | number;
       },
       MQ
     >
-)[]
+)[];
 
 export interface ResponsiveStyle<
   Variant extends string,
   Tokens extends DashTokens,
   MQ extends Record<string, string>
 > {
-  (...variants: ResponsiveStyleArguments<Variant, MQ>): string
-  css(...variants: ResponsiveStyleArguments<Variant, MQ>): string
-  styles: StyleMap<Variant, Tokens>
+  (...variants: ResponsiveStyleArguments<Variant, MQ>): string;
+  css(...variants: ResponsiveStyleArguments<Variant, MQ>): string;
+  styles: StyleMap<Variant, Tokens>;
 }
 
 export type ResponsiveLazy<
   Value extends LazyValue,
   MQ extends Record<string, string>
 > = {
-  (value?: Value | Responsive<Value, MQ>): string
+  (value?: Value | Responsive<Value, MQ>): string;
   /**
    * A method that returns indeterminate CSS strings based on the value
    * when called.
    *
-   * @param value A JSON serializable value to create indeterminate
+   * @param value - A JSON serializable value to create indeterminate
    *   styles from
    */
-  css(value?: Value | Responsive<Value, MQ>): string
-}
+  css(value?: Value | Responsive<Value, MQ>): string;
+};
 
 export type ResponsiveLazyCallback<
   Variant extends LazyValue,
@@ -300,8 +302,8 @@ export type ResponsiveLazyCallback<
   MQ extends Record<string, string>
 > = (
   value: Variant,
-  queryName: 'default' | Extract<keyof MQ, string>
-) => StyleValue<Tokens>
+  queryName: "default" | Extract<keyof MQ, string>
+) => StyleValue<Tokens>;
 
 export type ResponsiveOne<MQ extends Record<string, string>> = {
   (
@@ -311,7 +313,7 @@ export type ResponsiveOne<MQ extends Record<string, string>> = {
       | string
       | null
       | Responsive<boolean | number | string | null, MQ>
-  ): string
+  ): string;
   /**
    * A method that returns a CSS string when the first argument
    * is not falsy
@@ -323,7 +325,7 @@ export type ResponsiveOne<MQ extends Record<string, string>> = {
       | string
       | null
       | Responsive<boolean | number | string | null, MQ>
-  ): string
-}
+  ): string;
+};
 
-export default responsive
+export default responsive;

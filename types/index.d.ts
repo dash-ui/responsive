@@ -7,7 +7,7 @@ import type {
   DashTokens,
   Falsy,
   LazyValue,
-} from '@dash-ui/styles'
+} from "@dash-ui/styles";
 declare function responsive<
   Tokens extends DashTokens,
   MQ extends Record<string, string>,
@@ -15,7 +15,7 @@ declare function responsive<
 >(
   styles: Styles<Tokens, ThemeNames>,
   mediaQueries: MQ
-): ResponsiveStyles<Tokens, MQ, ThemeNames>
+): ResponsiveStyles<Tokens, MQ, ThemeNames>;
 export interface ResponsiveStyles<
   Tokens extends DashTokens,
   MQ extends Record<string, string>,
@@ -23,10 +23,10 @@ export interface ResponsiveStyles<
 > extends Styles<Tokens, ThemeNames> {
   <Variant extends string>(
     styleMap: StyleMap<Variant, Tokens>
-  ): ResponsiveStyle<Variant, Tokens, MQ>
+  ): ResponsiveStyle<Variant, Tokens, MQ>;
   lazy<Variant extends LazyValue>(
     lazyFn: ResponsiveLazyCallback<Variant, Tokens, MQ>
-  ): ResponsiveLazy<Variant, MQ>
+  ): ResponsiveLazy<Variant, MQ>;
   one(
     literals:
       | TemplateStringsArray
@@ -34,7 +34,7 @@ export interface ResponsiveStyles<
       | StyleObject
       | StyleCallback<Tokens>,
     ...placeholders: string[]
-  ): ResponsiveOne<MQ>
+  ): ResponsiveOne<MQ>;
   cls(
     style:
       | TemplateStringsArray
@@ -42,11 +42,11 @@ export interface ResponsiveStyles<
       | StyleObject
       | StyleCallback<Tokens>
       | Responsive<string | StyleObject | StyleCallback<Tokens>, MQ>
-  ): string
+  ): string;
 }
 export declare type Responsive<Variant, MQ extends Record<string, string>> = {
-  [key in Extract<keyof MQ, string>]?: Variant
-}
+  [key in Extract<keyof MQ, string>]?: Variant;
+};
 export declare type ResponsiveStyleArguments<
   Variant extends string,
   MQ extends Record<string, string>
@@ -54,30 +54,30 @@ export declare type ResponsiveStyleArguments<
   | Variant
   | Falsy
   | {
-      [Name in Variant]?: boolean | null | undefined | string | number
+      [Name in Variant]?: boolean | null | undefined | string | number;
     }
   | Responsive<Variant | Falsy, MQ>
   | Responsive<
       {
-        [Name in Variant]?: boolean | null | undefined | string | number
+        [Name in Variant]?: boolean | null | undefined | string | number;
       },
       MQ
     >
-)[]
+)[];
 export interface ResponsiveStyle<
   Variant extends string,
   Tokens extends DashTokens,
   MQ extends Record<string, string>
 > {
-  (...variants: ResponsiveStyleArguments<Variant, MQ>): string
-  css(...variants: ResponsiveStyleArguments<Variant, MQ>): string
-  styles: StyleMap<Variant, Tokens>
+  (...variants: ResponsiveStyleArguments<Variant, MQ>): string;
+  css(...variants: ResponsiveStyleArguments<Variant, MQ>): string;
+  styles: StyleMap<Variant, Tokens>;
 }
 export declare type ResponsiveLazy<
   Value extends LazyValue,
   MQ extends Record<string, string>
 > = {
-  (value?: Value | Responsive<Value, MQ>): string
+  (value?: Value | Responsive<Value, MQ>): string;
   /**
    * A method that returns indeterminate CSS strings based on the value
    * when called.
@@ -85,16 +85,16 @@ export declare type ResponsiveLazy<
    * @param value A JSON serializable value to create indeterminate
    *   styles from
    */
-  css(value?: Value | Responsive<Value, MQ>): string
-}
+  css(value?: Value | Responsive<Value, MQ>): string;
+};
 export declare type ResponsiveLazyCallback<
   Variant extends LazyValue,
   Tokens extends DashTokens,
   MQ extends Record<string, string>
 > = (
   value: Variant,
-  queryName: 'default' | Extract<keyof MQ, string>
-) => StyleValue<Tokens>
+  queryName: "default" | Extract<keyof MQ, string>
+) => StyleValue<Tokens>;
 export declare type ResponsiveOne<MQ extends Record<string, string>> = {
   (
     createClassName?:
@@ -103,7 +103,7 @@ export declare type ResponsiveOne<MQ extends Record<string, string>> = {
       | string
       | null
       | Responsive<boolean | number | string | null, MQ>
-  ): string
+  ): string;
   /**
    * A method that returns a CSS string when the first argument
    * is not falsy
@@ -115,6 +115,6 @@ export declare type ResponsiveOne<MQ extends Record<string, string>> = {
       | string
       | null
       | Responsive<boolean | number | string | null, MQ>
-  ): string
-}
-export default responsive
+  ): string;
+};
+export default responsive;

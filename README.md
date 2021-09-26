@@ -1,6 +1,6 @@
 <hr/>
-<br/>
-<img src='https://github.com/dash-ui/styles/raw/master/assets/logo.png'/>
+
+<img src='https://github.com/dash-ui/styles/raw/main/assets/logo.png'/>
 
 > A library for adding responsive styles to components with [dash-ui](https://github.com/dash-ui)
 
@@ -18,8 +18,8 @@ npm i @dash-ui/responsive
   <a aria-label="Code coverage report" href="https://codecov.io/gh/dash-ui/responsive">
     <img alt="Code coverage" src="https://img.shields.io/codecov/c/gh/dash-ui/responsive?style=for-the-badge&labelColor=24292e">
   </a>
-  <a aria-label="Build status" href="https://travis-ci.com/dash-ui/responsive">
-    <img alt="Build status" src="https://img.shields.io/travis/com/dash-ui/responsive?style=for-the-badge&labelColor=24292e">
+  <a aria-label="Build status" href="https://github.com/dash-ui/responsive/actions/workflows/release.yml">
+    <img alt="Build status" src="https://img.shields.io/github/workflow/status/dash-ui/responsive/release/main?style=for-the-badge&labelColor=24292e">
   </a>
   <a aria-label="NPM version" href="https://www.npmjs.com/package/@dash-ui/responsive">
     <img alt="NPM Version" src="https://img.shields.io/npm/v/@dash-ui/responsive?style=for-the-badge&labelColor=24292e">
