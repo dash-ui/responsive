@@ -43,7 +43,7 @@ const responsiveStyle = responsive(styles, {
   desktop: 'only screen and (min-width: 50em)'
 })
 
-const myResponsiveStyle = responsiveStyle({
+const myResponsiveStyle = responsiveStyle.variants({
   default: {
     display: 'block'
   },
@@ -61,7 +61,7 @@ const MyComponent = ({display}) => {
 
 ## API
 
-### responsive()
+### responsive.variants()
 
 #### Arguments
 

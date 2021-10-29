@@ -8,7 +8,7 @@ const responsiveStyle = responsive(styles, {
   md: "only screen and (min-width: 50em)",
 });
 
-const responsiveA = responsiveStyle({
+const responsiveA = responsiveStyle.variants({
   default: {
     width: 200,
     height: 600,
@@ -27,7 +27,7 @@ bench(`responsive variant`, () => {
   responsiveA({ sm: "md" });
 });
 
-const responsiveB = responsiveStyle({
+const responsiveB = responsiveStyle.variants({
   default: `
     width: 200px;
     height: 600px;
@@ -46,7 +46,7 @@ bench(`responsive variant [string]`, () => {
   responsiveB({ sm: "md" });
 });
 
-const responsiveC = responsiveStyle((queryValue) => {
+const responsiveC = responsiveStyle.variants((queryValue) => {
   if (queryValue === "md") {
     return `
       width: 400px;
@@ -68,7 +68,7 @@ bench(`responsive variant [callback]`, () => {
   responsiveC({ sm: "md" });
 });
 
-const responsiveD = responsiveStyle((queryValue) => {
+const responsiveD = responsiveStyle.variants((queryValue) => {
   if (queryValue === "md") {
     return {
       width: 400,
