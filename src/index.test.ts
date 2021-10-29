@@ -40,7 +40,7 @@ describe("responsive()", () => {
   });
 
   it("should add styles in order", () => {
-    const responsiveDisplay = responsiveStyles({
+    const responsiveDisplay = responsiveStyles.variants({
       default: {
         display: "block",
       },
@@ -60,7 +60,7 @@ describe("responsive()", () => {
   });
 
   it("should provide tokens", () => {
-    const responsiveDisplay = responsiveStyles({
+    const responsiveDisplay = responsiveStyles.variants({
       default: ({ color }) => ({ color: color.white }),
       backgroundColor: ({ color }) => ({ backgroundColor: color.white }),
     });
@@ -70,14 +70,14 @@ describe("responsive()", () => {
   });
 
   it("should return add just the default", () => {
-    const responsiveDisplay = responsiveStyles({
+    const responsiveDisplay = responsiveStyles.variants({
       default: ({ color }) => ({ color: color.white }),
     });
     expect(responsiveDisplay.css()).toBe("color:var(--color-white);");
   });
 
   it("should return empty string for no variant match", () => {
-    const responsiveDisplay = responsiveStyles({
+    const responsiveDisplay = responsiveStyles.variants({
       backgroundColor: ({ color }) => ({ backgroundColor: color.white }),
     });
     expect(responsiveDisplay.css()).toBe("");
@@ -85,7 +85,7 @@ describe("responsive()", () => {
   });
 
   it("should work with style map", () => {
-    const responsiveDisplay = responsiveStyles({
+    const responsiveDisplay = responsiveStyles.variants({
       default: {
         display: "block",
       },
@@ -101,7 +101,7 @@ describe("responsive()", () => {
   });
 
   it("should work without default in style map", () => {
-    const responsiveDisplay = responsiveStyles({
+    const responsiveDisplay = responsiveStyles.variants({
       flex: {
         display: "flex",
       },
@@ -114,7 +114,7 @@ describe("responsive()", () => {
   });
 
   it("should add media queries to style map", () => {
-    const responsiveDisplay = responsiveStyles({
+    const responsiveDisplay = responsiveStyles.variants({
       flex: {
         display: "flex",
       },
@@ -131,7 +131,7 @@ describe("responsive()", () => {
   });
 
   it("should return empty string for misses", () => {
-    const responsiveDisplay = responsiveStyles({
+    const responsiveDisplay = responsiveStyles.variants({
       flex: {
         display: "flex",
       },
@@ -144,7 +144,7 @@ describe("responsive()", () => {
   });
 
   it("should insert class into the dom", () => {
-    const responsiveDisplay = responsiveStyles({
+    const responsiveDisplay = responsiveStyles.variants({
       flex: {
         display: "flex",
       },
