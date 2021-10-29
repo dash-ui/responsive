@@ -1,38 +1,39 @@
 import type {
-  Styles,
-  StyleMap,
-  StyleValue,
-  StyleCallback,
-  StyleObject,
+  DashThemes,
   DashTokens,
   Falsy,
   LazyValue,
+  StyleCallback,
+  StyleMap,
+  StyleObject,
+  Styles,
+  StyleValue,
 } from "@dash-ui/styles";
 declare function responsive<
   Tokens extends DashTokens,
-  MQ extends Record<string, string>,
-  ThemeNames extends string
+  Themes extends DashThemes,
+  MQ extends Record<string, string>
 >(
-  styles: Styles<Tokens, ThemeNames>,
+  styles: Styles<Tokens, Themes>,
   mediaQueries: MQ
-): ResponsiveStyles<Tokens, MQ, ThemeNames>;
+): ResponsiveStyles<Tokens, Themes, MQ>;
 export interface ResponsiveStyles<
   Tokens extends DashTokens,
-  MQ extends Record<string, string>,
-  ThemeNames extends string
-> extends Styles<Tokens, ThemeNames> {
-  <Variant extends string>(
-    styleMap: StyleMap<Variant, Tokens>
-  ): ResponsiveStyle<Variant, Tokens, MQ>;
+  Themes extends DashThemes,
+  MQ extends Record<string, string>
+> extends Styles<Tokens, Themes> {
+  variants<Variant extends string>(
+    styleMap: StyleMap<Variant, Tokens, Themes>
+  ): ResponsiveStyle<Variant, Tokens, Themes, MQ>;
   lazy<Variant extends LazyValue>(
-    lazyFn: ResponsiveLazyCallback<Variant, Tokens, MQ>
+    lazyFn: ResponsiveLazyCallback<Variant, Tokens, Themes, MQ>
   ): ResponsiveLazy<Variant, MQ>;
   one(
     literals:
       | TemplateStringsArray
       | string
       | StyleObject
-      | StyleCallback<Tokens>,
+      | StyleCallback<Tokens, Themes>,
     ...placeholders: string[]
   ): ResponsiveOne<MQ>;
   cls(
@@ -40,8 +41,8 @@ export interface ResponsiveStyles<
       | TemplateStringsArray
       | string
       | StyleObject
-      | StyleCallback<Tokens>
-      | Responsive<string | StyleObject | StyleCallback<Tokens>, MQ>
+      | StyleCallback<Tokens, Themes>
+      | Responsive<string | StyleObject | StyleCallback<Tokens, Themes>, MQ>
   ): string;
 }
 export declare type Responsive<Variant, MQ extends Record<string, string>> = {
@@ -67,11 +68,12 @@ export declare type ResponsiveStyleArguments<
 export interface ResponsiveStyle<
   Variant extends string,
   Tokens extends DashTokens,
+  Themes extends DashThemes,
   MQ extends Record<string, string>
 > {
   (...variants: ResponsiveStyleArguments<Variant, MQ>): string;
   css(...variants: ResponsiveStyleArguments<Variant, MQ>): string;
-  styles: StyleMap<Variant, Tokens>;
+  styles: StyleMap<Variant, Tokens, Themes>;
 }
 export declare type ResponsiveLazy<
   Value extends LazyValue,
@@ -82,7 +84,7 @@ export declare type ResponsiveLazy<
    * A method that returns indeterminate CSS strings based on the value
    * when called.
    *
-   * @param value A JSON serializable value to create indeterminate
+   * @param value - A JSON serializable value to create indeterminate
    *   styles from
    */
   css(value?: Value | Responsive<Value, MQ>): string;
@@ -90,11 +92,12 @@ export declare type ResponsiveLazy<
 export declare type ResponsiveLazyCallback<
   Variant extends LazyValue,
   Tokens extends DashTokens,
+  Themes extends DashThemes,
   MQ extends Record<string, string>
 > = (
   value: Variant,
   queryName: "default" | Extract<keyof MQ, string>
-) => StyleValue<Tokens>;
+) => StyleValue<Tokens, Themes>;
 export declare type ResponsiveOne<MQ extends Record<string, string>> = {
   (
     createClassName?:

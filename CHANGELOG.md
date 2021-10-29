@@ -1,3 +1,14 @@
+# [1.0.0-alpha.1](https://github.com/dash-ui/responsive/compare/v0.2.3...v1.0.0-alpha.1) (2021-10-29)
+
+### Features
+
+- update api and types to match latest dash alpha ([d04ec1d](https://github.com/dash-ui/responsive/commit/d04ec1d467d9f74e294798ed1e6fe1e48172abdb))
+
+### BREAKING CHANGES
+
+- responsive() no longer returns a function, it returns an object. The function it
+  used to return is now on the "variants" property.
+
 # Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
