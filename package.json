@@ -33,7 +33,7 @@
   "sideEffects": false,
   "types": "types/index.d.ts",
   "dependencies": {
-    "@dash-ui/mq": "^1.0.0-alpha.3"
+    "@dash-ui/mq": "^1.0.0-alpha.6"
   },
   "peerDependencies": {
     "@dash-ui/styles": ">=1.0.0-alpha.3"

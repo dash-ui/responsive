@@ -26,7 +26,7 @@ function responsive<
   const mq = dashMq(styles, mediaQueries);
   function isMediaQuery(variant: Record<string, any>) {
     for (let i = 0; i < numMediaQueryKeys; i++)
-      if (String(mediaQueryKeys[i]) in variant) return true;
+      if (variant["" + mediaQueryKeys[i]] !== void 0) return true;
 
     return false;
   }
@@ -44,7 +44,12 @@ function responsive<
         : "";
       const style = styles.variants(other as any);
 
-      function css(...variants: ResponsiveStyleArguments<Variant, MQ>) {
+      function css() {
+        // eslint-disable-next-line prefer-rest-params
+        const variants = arguments as unknown as ResponsiveStyleArguments<
+          Variant,
+          MQ
+        >[];
         let css = defaultCss;
 
         for (let i = 0; i < variants.length; i++) {
@@ -64,8 +69,8 @@ function responsive<
               >
             > = {};
 
-            for (let i = 0; i < mediaQueryKeys.length; i++) {
-              const queryName = mediaQueryKeys[i];
+            for (let j = 0; j < numMediaQueryKeys; j++) {
+              const queryName = mediaQueryKeys[j];
               const queryValue = (variant as Responsive<Variant, MQ>)[
                 queryName
               ];
@@ -83,13 +88,13 @@ function responsive<
         return css;
       }
 
-      const responsiveStyle: ResponsiveStyle<Variant, Tokens, Themes, MQ> = (
-        ...variants: ResponsiveStyleArguments<Variant, MQ>
-      ) => {
-        const variantCss = css(...variants);
-        if (!variantCss) return "";
-        return styles.cls(variantCss);
-      };
+      const responsiveStyle: ResponsiveStyle<Variant, Tokens, Themes, MQ> =
+        function () {
+          // eslint-disable-next-line
+          const variantCss = css.apply(null, arguments as any);
+          if (!variantCss) return "";
+          return styles.cls(variantCss);
+        };
 
       responsiveStyle.styles = "css" in style ? (style.styles as any) : style;
       responsiveStyle.css = css;

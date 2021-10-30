@@ -5,7 +5,7 @@ specifiers:
   '@commitlint/cli': latest
   '@commitlint/config-conventional': latest
   '@dash-ui/jest': ^2.1.2
-  '@dash-ui/mq': ^1.0.0-alpha.3
+  '@dash-ui/mq': ^1.0.0-alpha.6
   '@dash-ui/styles': ^1.0.0-alpha.5
   '@essentials/benchmark': ^1.0.7
   '@semantic-release/changelog': ^6.0.0
@@ -26,7 +26,7 @@ specifiers:
   typescript: latest
 
 dependencies:
-  '@dash-ui/mq': 1.0.0-alpha.3_@dash-ui+styles@1.0.0-alpha.5
+  '@dash-ui/mq': 1.0.0-alpha.6_@dash-ui+styles@1.0.0-alpha.5
 
 devDependencies:
   '@babel/node': 7.15.4
@@ -1577,8 +1577,8 @@ packages:
       css: 2.2.4
     dev: true
 
-  /@dash-ui/mq/1.0.0-alpha.3_@dash-ui+styles@1.0.0-alpha.5:
-    resolution: {integrity: sha512-47UQ+eCUDvqGgV8kv8w6WhLkKRrtm8/apElmuESO1A/dWLn2HUNsOkKnm4Gjl0IbN3K3JJGlOUU16gtzFd8CzA==}
+  /@dash-ui/mq/1.0.0-alpha.6_@dash-ui+styles@1.0.0-alpha.5:
+    resolution: {integrity: sha512-yJXxuErmysQnxRQCQjEmlr4ZhE1WbyCSQxxzNA4vkQ/uv6c6R4N504eYdwCY+KPloUSmDguFkl9RIoxr7yKCtA==}
     peerDependencies:
       '@dash-ui/styles': '>=1.0.0-alpha.1'
     dependencies:
