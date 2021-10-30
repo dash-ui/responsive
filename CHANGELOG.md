@@ -1,3 +1,9 @@
+# [1.0.0-alpha.2](https://github.com/dash-ui/responsive/compare/v1.0.0-alpha.1...v1.0.0-alpha.2) (2021-10-30)
+
+### Bug Fixes
+
+- add numeric variants ([9d071ca](https://github.com/dash-ui/responsive/commit/9d071ca6ea56563489bbec51e89a2a17cf14016e))
+
 # [1.0.0-alpha.1](https://github.com/dash-ui/responsive/compare/v0.2.3...v1.0.0-alpha.1) (2021-10-29)
 
 ### Features
