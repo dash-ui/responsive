@@ -20,20 +20,22 @@ function responsive<
 >(styles: Styles<Tokens, Themes>, mediaQueries: MQ) {
   const mediaQueryKeys = Object.keys(mediaQueries) as Extract<
     keyof MQ,
-    string
+    string | number
   >[];
   const numMediaQueryKeys = mediaQueryKeys.length;
   const mq = dashMq(styles, mediaQueries);
   function isMediaQuery(variant: Record<string, any>) {
     for (let i = 0; i < numMediaQueryKeys; i++)
-      if (mediaQueryKeys[i] in variant) return true;
+      if (String(mediaQueryKeys[i]) in variant) return true;
 
     return false;
   }
 
   const responsiveStyles: ResponsiveStyles<Tokens, Themes, MQ> = {
     ...styles,
-    variants<Variant extends string>(styleMap: StyleMap<Variant, Tokens>) {
+    variants<Variant extends string | number>(
+      styleMap: StyleMap<Variant, Tokens>
+    ) {
       // We separate out the default style so that it will only be
       // applied one time
       const { default: defaultStyle, ...other } = styleMap;
@@ -55,7 +57,12 @@ function responsive<
             isMediaQuery(variant)
           ) {
             // Media queries
-            const mqs: Partial<Record<keyof MQ, StyleValue<Tokens>>> = {};
+            const mqs: Partial<
+              Record<
+                Extract<keyof MQ, string | number>,
+                StyleValue<Tokens, Themes>
+              >
+            > = {};
 
             for (let i = 0; i < mediaQueryKeys.length; i++) {
               const queryName = mediaQueryKeys[i];
@@ -111,7 +118,7 @@ function responsive<
           isMediaQuery(variant as Responsive<any, MQ>)
         ) {
           // Media queries
-          const mqs: Partial<Record<keyof MQ, StyleValue<Tokens>>> = {};
+          const mqs: Partial<Record<keyof MQ, StyleValue<Tokens, Themes>>> = {};
           return mq(
             mediaQueryKeys.reduce((acc, queryName) => {
               const queryValue = (variant as Responsive<Variant, MQ>)[
@@ -157,7 +164,7 @@ function responsive<
       responsiveOne.css = (createCss) => {
         if (typeof createCss === "object" && createCss !== null) {
           // Media queries
-          const mqs: Partial<Record<keyof MQ, StyleValue<Tokens>>> = {};
+          const mqs: Partial<Record<keyof MQ, StyleValue<Tokens, Themes>>> = {};
           return mq(
             mediaQueryKeys.reduce((acc, queryName) => {
               const queryValue = createCss[queryName];
@@ -183,7 +190,7 @@ function responsive<
         !Array.isArray(maybeResponsiveStyle) &&
         isMediaQuery(maybeResponsiveStyle)
       ) {
-        const mqs: Partial<Record<keyof MQ, StyleValue<Tokens>>> = {};
+        const mqs: Partial<Record<keyof MQ, StyleValue<Tokens, Themes>>> = {};
 
         return styles.cls(
           mq(
@@ -213,7 +220,7 @@ export interface ResponsiveStyles<
   Themes extends DashThemes,
   MQ extends Record<string, string>
 > extends Styles<Tokens, Themes> {
-  variants<Variant extends string>(
+  variants<Variant extends string | number>(
     styleMap: StyleMap<Variant, Tokens, Themes>
   ): ResponsiveStyle<Variant, Tokens, Themes, MQ>;
 
@@ -240,13 +247,13 @@ export interface ResponsiveStyles<
   ): string;
 }
 
-export type Responsive<Variant, MQ extends Record<string, string>> = {
-  [key in Extract<keyof MQ, string>]?: Variant;
+export type Responsive<Variant, MQ extends Record<string | number, string>> = {
+  [key in Extract<keyof MQ, string | number>]?: Variant;
 };
 
 export type ResponsiveStyleArguments<
-  Variant extends string,
-  MQ extends Record<string, string>
+  Variant extends string | number,
+  MQ extends Record<string | number, string>
 > = (
   | Variant
   | Falsy
@@ -263,10 +270,10 @@ export type ResponsiveStyleArguments<
 )[];
 
 export interface ResponsiveStyle<
-  Variant extends string,
+  Variant extends string | number,
   Tokens extends DashTokens,
   Themes extends DashThemes,
-  MQ extends Record<string, string>
+  MQ extends Record<string | number, string>
 > {
   (...variants: ResponsiveStyleArguments<Variant, MQ>): string;
   css(...variants: ResponsiveStyleArguments<Variant, MQ>): string;
@@ -275,7 +282,7 @@ export interface ResponsiveStyle<
 
 export type ResponsiveLazy<
   Value extends LazyValue,
-  MQ extends Record<string, string>
+  MQ extends Record<string | number, string>
 > = {
   (value?: Value | Responsive<Value, MQ>): string;
   /**
@@ -292,10 +299,10 @@ export type ResponsiveLazyCallback<
   Variant extends LazyValue,
   Tokens extends DashTokens,
   Themes extends DashThemes,
-  MQ extends Record<string, string>
+  MQ extends Record<string | number, string>
 > = (
   value: Variant,
-  queryName: "default" | Extract<keyof MQ, string>
+  queryName: "default" | Extract<keyof MQ, string | number>
 ) => StyleValue<Tokens, Themes>;
 
 export type ResponsiveOne<MQ extends Record<string, string>> = {
