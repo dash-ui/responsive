@@ -22,7 +22,7 @@ export interface ResponsiveStyles<
   Themes extends DashThemes,
   MQ extends Record<string, string>
 > extends Styles<Tokens, Themes> {
-  variants<Variant extends string>(
+  variants<Variant extends string | number>(
     styleMap: StyleMap<Variant, Tokens, Themes>
   ): ResponsiveStyle<Variant, Tokens, Themes, MQ>;
   lazy<Variant extends LazyValue>(
@@ -45,12 +45,15 @@ export interface ResponsiveStyles<
       | Responsive<string | StyleObject | StyleCallback<Tokens, Themes>, MQ>
   ): string;
 }
-export declare type Responsive<Variant, MQ extends Record<string, string>> = {
-  [key in Extract<keyof MQ, string>]?: Variant;
+export declare type Responsive<
+  Variant,
+  MQ extends Record<string | number, string>
+> = {
+  [key in Extract<keyof MQ, string | number>]?: Variant;
 };
 export declare type ResponsiveStyleArguments<
-  Variant extends string,
-  MQ extends Record<string, string>
+  Variant extends string | number,
+  MQ extends Record<string | number, string>
 > = (
   | Variant
   | Falsy
@@ -66,10 +69,10 @@ export declare type ResponsiveStyleArguments<
     >
 )[];
 export interface ResponsiveStyle<
-  Variant extends string,
+  Variant extends string | number,
   Tokens extends DashTokens,
   Themes extends DashThemes,
-  MQ extends Record<string, string>
+  MQ extends Record<string | number, string>
 > {
   (...variants: ResponsiveStyleArguments<Variant, MQ>): string;
   css(...variants: ResponsiveStyleArguments<Variant, MQ>): string;
@@ -77,7 +80,7 @@ export interface ResponsiveStyle<
 }
 export declare type ResponsiveLazy<
   Value extends LazyValue,
-  MQ extends Record<string, string>
+  MQ extends Record<string | number, string>
 > = {
   (value?: Value | Responsive<Value, MQ>): string;
   /**
@@ -93,10 +96,10 @@ export declare type ResponsiveLazyCallback<
   Variant extends LazyValue,
   Tokens extends DashTokens,
   Themes extends DashThemes,
-  MQ extends Record<string, string>
+  MQ extends Record<string | number, string>
 > = (
   value: Variant,
-  queryName: "default" | Extract<keyof MQ, string>
+  queryName: "default" | Extract<keyof MQ, string | number>
 ) => StyleValue<Tokens, Themes>;
 export declare type ResponsiveOne<MQ extends Record<string, string>> = {
   (
