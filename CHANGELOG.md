@@ -1,3 +1,9 @@
+# [1.0.0-alpha.3](https://github.com/dash-ui/responsive/compare/v1.0.0-alpha.2...v1.0.0-alpha.3) (2021-10-30)
+
+### Bug Fixes
+
+- update mq dependency ([b0401d0](https://github.com/dash-ui/responsive/commit/b0401d0212d9e7e9db0986666d42cbd9b4a5b2d8))
+
 # [1.0.0-alpha.2](https://github.com/dash-ui/responsive/compare/v1.0.0-alpha.1...v1.0.0-alpha.2) (2021-10-30)
 
 ### Bug Fixes
