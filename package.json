@@ -32,9 +32,6 @@
   },
   "sideEffects": false,
   "types": "types/index.d.ts",
-  "dependencies": {
-    "@dash-ui/mq": "^1.0.0-alpha.6"
-  },
   "peerDependencies": {
     "@dash-ui/styles": ">=1.0.0-alpha.3"
   },
@@ -43,7 +40,7 @@
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
     "@dash-ui/jest": "^2.1.2",
-    "@dash-ui/styles": "^1.0.0-alpha.6",
+    "@dash-ui/styles": "^1.0.0-alpha.7",
     "@essentials/benchmark": "^1.0.7",
     "@semantic-release/changelog": "^6.0.0",
     "@semantic-release/git": "^10.0.0",
