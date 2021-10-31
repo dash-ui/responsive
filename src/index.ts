@@ -1,4 +1,4 @@
-import dashMq from "@dash-ui/mq";
+/* eslint-disable prefer-rest-params */
 import { compileStyles } from "@dash-ui/styles";
 import type {
   DashThemes,
@@ -23,7 +23,7 @@ function responsive<
     string | number
   >[];
   const numMediaQueryKeys = mediaQueryKeys.length;
-  const mq = dashMq(styles, mediaQueries);
+
   function isMediaQuery(variant: Record<string | number, any>) {
     for (let i = 0; i < numMediaQueryKeys; i++)
       if (variant[mediaQueryKeys[i]] !== void 0) return true;
@@ -38,14 +38,15 @@ function responsive<
     ) {
       // We separate out the default style so that it will only be
       // applied one time
-      const { default: defaultStyle, ...other } = styleMap;
-      const defaultCss = defaultStyle
-        ? compileStyles(defaultStyle, styles.tokens)
-        : "";
-      const style = styles.variants(other as any);
+      const style = styles.variants(styleMap);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { default: defaultStyle, ...styleMapWithoutDefault } = styleMap;
+      const styleWithoutDefault = styles.variants(
+        styleMapWithoutDefault as any
+      );
+      const defaultCss = style.css();
 
       function css() {
-        // eslint-disable-next-line prefer-rest-params
         const variants = arguments as unknown as ResponsiveStyleArguments<
           Variant,
           MQ
@@ -61,39 +62,53 @@ function responsive<
             variant !== null &&
             isMediaQuery(variant)
           ) {
-            // Media queries
-            const mqs: Partial<
-              Record<
-                Extract<keyof MQ, string | number>,
-                StyleValue<Tokens, Themes>
-              >
-            > = {};
-
             for (let j = 0; j < numMediaQueryKeys; j++) {
               const queryName = mediaQueryKeys[j];
               const queryValue = (variant as Responsive<Variant, MQ>)[
                 queryName
               ];
               if (queryValue !== void 0) {
-                mqs[queryName] = style.css(queryValue);
+                css +=
+                  "@media " +
+                  mediaQueries[queryName] +
+                  "{" +
+                  styleWithoutDefault.css(queryValue) +
+                  "}";
               }
             }
-
-            css += mq(mqs);
           } else {
-            css += style.css(variant as any);
+            css += styleWithoutDefault.css(variant as any);
           }
         }
 
         return css;
       }
-
+      const oneCache = new Map<string, StylesOne>();
       const responsiveStyle: ResponsiveStyle<Variant, Tokens, Themes, MQ> =
         function () {
-          // eslint-disable-next-line
-          const variantCss = css.apply(null, arguments as any);
-          if (!variantCss) return "";
-          return styles.cls(variantCss);
+          if (
+            arguments.length === 0 ||
+            (arguments.length === 1 && typeof arguments[0] !== "object")
+          ) {
+            return style(arguments[0]);
+          }
+          let key = "";
+          for (let i = 0; i < arguments.length; i++) {
+            key +=
+              typeof arguments[i] === "object" && arguments[i] !== null
+                ? fastStringify(arguments[i])
+                : arguments[i] + "";
+          }
+
+          let cachedOne = oneCache.get(key);
+
+          if (!cachedOne) {
+            // eslint-disable-next-line prefer-spread
+            cachedOne = styles.one(css.apply(null, arguments as any));
+            oneCache.set(key, cachedOne);
+          }
+
+          return cachedOne();
         };
 
       responsiveStyle.styles = "css" in style ? (style.styles as any) : style;
@@ -104,7 +119,10 @@ function responsive<
       lazyFn: ResponsiveLazyCallback<Variant, Tokens, Themes, MQ>
     ) {
       const oneCache = new Map<string, StylesOne>();
+      const baseLazy = styles.lazy(lazyFn as any);
       const responsiveLazy: ResponsiveLazy<Variant, MQ> = (variant) => {
+        if (typeof variant !== "object" || variant === null)
+          return baseLazy(variant);
         const key = JSON.stringify(variant);
         let cachedOne = oneCache.get(key);
 
@@ -123,21 +141,25 @@ function responsive<
           isMediaQuery(variant as Responsive<any, MQ>)
         ) {
           // Media queries
-          const mqs: Partial<Record<keyof MQ, StyleValue<Tokens, Themes>>> = {};
-          return mq(
-            mediaQueryKeys.reduce((acc, queryName) => {
-              const queryValue = (variant as Responsive<Variant, MQ>)[
-                queryName
-              ];
-              if (queryValue !== void 0) {
-                acc[queryName] = compileStyles(
+          let css = "";
+
+          for (let i = 0; i < numMediaQueryKeys; i++) {
+            const queryName = mediaQueryKeys[i];
+            const queryValue = (variant as Responsive<Variant, MQ>)[queryName];
+            if (queryValue !== void 0) {
+              css +=
+                "@media " +
+                mediaQueries[queryName] +
+                "{" +
+                compileStyles(
                   lazyFn(queryValue as any, queryName),
                   styles.tokens
-                );
-              }
-              return acc;
-            }, mqs)
-          );
+                ) +
+                "}";
+            }
+          }
+
+          return css;
         }
 
         return compileStyles(lazyFn(variant as any, "default"), styles.tokens);
@@ -151,8 +173,8 @@ function responsive<
       const oneCache = new Map<string, StylesOne>();
       const responsiveOne: ResponsiveOne<MQ> = (createClassName) => {
         if (!createClassName && createClassName !== void 0) return "";
-        if (typeof createClassName === "object") {
-          const key = JSON.stringify(createClassName);
+        if (typeof createClassName === "object" && createClassName !== null) {
+          const key = fastStringify(createClassName);
           let cachedOne = oneCache.get(key);
 
           if (!cachedOne) {
@@ -169,16 +191,16 @@ function responsive<
       responsiveOne.css = (createCss) => {
         if (typeof createCss === "object" && createCss !== null) {
           // Media queries
-          const mqs: Partial<Record<keyof MQ, StyleValue<Tokens, Themes>>> = {};
-          return mq(
-            mediaQueryKeys.reduce((acc, queryName) => {
-              const queryValue = createCss[queryName];
-              if (queryValue) {
-                acc[queryName] = one.css(queryValue);
-              }
-              return acc;
-            }, mqs)
-          );
+          let css = "";
+          for (let i = 0; i < numMediaQueryKeys; i++) {
+            const queryName = mediaQueryKeys[i];
+            const queryValue = (createCss as Responsive<any, MQ>)[queryName];
+            if (queryValue !== void 0 && queryValue) {
+              css +=
+                "@media " + mediaQueries[queryName] + "{" + one.css() + "}";
+            }
+          }
+          return css;
         }
 
         return one.css(createCss);
@@ -195,19 +217,23 @@ function responsive<
         !Array.isArray(maybeResponsiveStyle) &&
         isMediaQuery(maybeResponsiveStyle)
       ) {
-        const mqs: Partial<Record<keyof MQ, StyleValue<Tokens, Themes>>> = {};
+        // Media queries
+        let css = "";
 
-        return styles.cls(
-          mq(
-            mediaQueryKeys.reduce((acc, queryName) => {
-              const queryValue = (maybeResponsiveStyle as any)[queryName];
-              if (queryValue !== void 0) {
-                acc[queryName] = queryValue;
-              }
-              return acc;
-            }, mqs)
-          )
-        );
+        for (let i = 0; i < numMediaQueryKeys; i++) {
+          const queryName = mediaQueryKeys[i];
+          const queryValue = (maybeResponsiveStyle as any)[queryName];
+          if (queryValue !== void 0 && queryValue) {
+            css +=
+              "@media " +
+              mediaQueries[queryName] +
+              "{" +
+              compileStyles(queryValue, styles.tokens) +
+              "}";
+          }
+        }
+
+        return styles.cls(css);
       }
 
       // eslint-disable-next-line prefer-rest-params
@@ -218,6 +244,19 @@ function responsive<
   return typeof process !== "undefined" && process.env.NODE_ENV !== "produciton"
     ? Object.freeze(responsiveStyles)
     : responsiveStyles;
+}
+
+function fastStringify(obj: Record<string, unknown>) {
+  let key = "";
+  for (const k in obj)
+    key +=
+      k +
+      ":" +
+      (typeof obj[k] === "object" && obj[k] !== null
+        ? "{" + fastStringify(obj[k] as any) + "}"
+        : obj[k]) +
+      ";";
+  return key;
 }
 
 export interface ResponsiveStyles<

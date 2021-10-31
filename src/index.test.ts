@@ -59,6 +59,51 @@ describe("responsive()", () => {
     );
   });
 
+  it("should work with nested objects", () => {
+    const responsiveDisplay = responsiveStyles.variants({
+      default: {
+        display: "block",
+      },
+      flex: {
+        display: "flex",
+      },
+      inlineBlock: {
+        display: "inline-block",
+      },
+    });
+
+    expect(
+      responsiveDisplay.css({ phone: { inlineBlock: true, flex: true } })
+    ).toBe(
+      `display:block;@media ${mediaQueries.phone}{display:inline-block;display:flex;}`
+    );
+  });
+
+  it("should work insert into dom with nested objects", () => {
+    const responsiveDisplay = responsiveStyles.variants({
+      default: {
+        display: "block",
+      },
+      flex: {
+        display: "flex",
+      },
+      inlineBlock: {
+        display: "inline-block",
+      },
+    });
+
+    expect(
+      responsiveDisplay({ phone: { inlineBlock: true, flex: true } })
+    ).not.toBe("");
+    expect(document.querySelectorAll(`style[data-dash]`).length).toBe(3);
+    expect(document.querySelectorAll(`style[data-dash]`)[1]).toMatchSnapshot(
+      "block"
+    );
+    expect(document.querySelectorAll(`style[data-dash]`)[2]).toMatchSnapshot(
+      "inline-block+flex"
+    );
+  });
+
   it("should provide tokens", () => {
     const responsiveDisplay = responsiveStyles.variants({
       default: ({ color }) => ({ color: color.white }),
@@ -141,6 +186,19 @@ describe("responsive()", () => {
     });
 
     expect(responsiveDisplay()).toBe("");
+  });
+
+  it("should hit base styles", () => {
+    const responsiveDisplay = responsiveStyles.variants({
+      flex: {
+        display: "flex",
+      },
+      inlineBlock: {
+        display: "inline-block",
+      },
+    });
+
+    expect(responsiveDisplay("flex")).not.toBe("");
   });
 
   it("should insert class into the dom", () => {
