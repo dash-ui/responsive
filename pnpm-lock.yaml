@@ -6,7 +6,7 @@ specifiers:
   '@commitlint/config-conventional': latest
   '@dash-ui/jest': ^2.1.2
   '@dash-ui/mq': ^1.0.0-alpha.6
-  '@dash-ui/styles': ^1.0.0-alpha.5
+  '@dash-ui/styles': ^1.0.0-alpha.6
   '@essentials/benchmark': ^1.0.7
   '@semantic-release/changelog': ^6.0.0
   '@semantic-release/git': ^10.0.0
@@ -26,14 +26,14 @@ specifiers:
   typescript: latest
 
 dependencies:
-  '@dash-ui/mq': 1.0.0-alpha.6_@dash-ui+styles@1.0.0-alpha.5
+  '@dash-ui/mq': 1.0.0-alpha.6_@dash-ui+styles@1.0.0-alpha.6
 
 devDependencies:
   '@babel/node': 7.15.4
   '@commitlint/cli': 13.2.1
   '@commitlint/config-conventional': 13.2.0
   '@dash-ui/jest': 2.1.2
-  '@dash-ui/styles': 1.0.0-alpha.5
+  '@dash-ui/styles': 1.0.0-alpha.6
   '@essentials/benchmark': 1.0.7
   '@semantic-release/changelog': 6.0.0
   '@semantic-release/git': 10.0.0
@@ -1577,16 +1577,16 @@ packages:
       css: 2.2.4
     dev: true
 
-  /@dash-ui/mq/1.0.0-alpha.6_@dash-ui+styles@1.0.0-alpha.5:
+  /@dash-ui/mq/1.0.0-alpha.6_@dash-ui+styles@1.0.0-alpha.6:
     resolution: {integrity: sha512-yJXxuErmysQnxRQCQjEmlr4ZhE1WbyCSQxxzNA4vkQ/uv6c6R4N504eYdwCY+KPloUSmDguFkl9RIoxr7yKCtA==}
     peerDependencies:
       '@dash-ui/styles': '>=1.0.0-alpha.1'
     dependencies:
-      '@dash-ui/styles': 1.0.0-alpha.5
+      '@dash-ui/styles': 1.0.0-alpha.6
     dev: false
 
-  /@dash-ui/styles/1.0.0-alpha.5:
-    resolution: {integrity: sha512-cFJncB8Dp1fQ3Y5QBey6n3DDL/0TtgVywgRiq6ZXz0diShfZ3lF37xpWlahRlAM1u23uMI1tEhEj2CL2H9nYjw==}
+  /@dash-ui/styles/1.0.0-alpha.6:
+    resolution: {integrity: sha512-nyR22lJIGe2AGQFTvI2uOp65jJdFKvD3dBujO2sMOoF0aIrw845QpURUxCeowxJm2Ft9EtcbFlgMKGK4bxqK3A==}
     dependencies:
       '@dash-ui/stylis': 1.0.5
       '@dash-ui/unitless': 2.0.0
