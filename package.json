@@ -1,6 +1,6 @@
 {
   "name": "@dash-ui/responsive",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "description": "A library for adding responsive style props to components with @dash-ui",
   "license": "MIT",
   "author": "Jared Lunde <jared.lunde@gmail.com> (https://jaredlunde.com/)",
