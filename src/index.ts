@@ -24,9 +24,9 @@ function responsive<
   >[];
   const numMediaQueryKeys = mediaQueryKeys.length;
   const mq = dashMq(styles, mediaQueries);
-  function isMediaQuery(variant: Record<string, any>) {
+  function isMediaQuery(variant: Record<string | number, any>) {
     for (let i = 0; i < numMediaQueryKeys; i++)
-      if (variant["" + mediaQueryKeys[i]] !== void 0) return true;
+      if (variant[mediaQueryKeys[i]] !== void 0) return true;
 
     return false;
   }
