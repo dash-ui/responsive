@@ -1,9 +1,14 @@
-# [1.0.0-alpha.4](https://github.com/dash-ui/responsive/compare/v1.0.0-alpha.3...v1.0.0-alpha.4) (2021-10-31)
+# [1.0.0-alpha.5](https://github.com/dash-ui/responsive/compare/v1.0.0-alpha.4...v1.0.0-alpha.5) (2021-10-31)
 
+### Performance Improvements
+
+- improve variants/one/lazy perf ([0a14e27](https://github.com/dash-ui/responsive/commit/0a14e27f5c39fba77f7bf4f00f1e374035f920c4))
+
+# [1.0.0-alpha.4](https://github.com/dash-ui/responsive/compare/v1.0.0-alpha.3...v1.0.0-alpha.4) (2021-10-31)
 
 ### Bug Fixes
 
-* fix key setting ([d6defc7](https://github.com/dash-ui/responsive/commit/d6defc7804b4b4e2f1e25afc2ea108308f3a8f3d))
+- fix key setting ([d6defc7](https://github.com/dash-ui/responsive/commit/d6defc7804b4b4e2f1e25afc2ea108308f3a8f3d))
 
 # [1.0.0-alpha.3](https://github.com/dash-ui/responsive/compare/v1.0.0-alpha.2...v1.0.0-alpha.3) (2021-10-30)
 
