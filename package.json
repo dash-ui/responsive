@@ -40,7 +40,7 @@
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
     "@dash-ui/jest": "^2.1.2",
-    "@dash-ui/styles": "^1.0.0-alpha.7",
+    "@dash-ui/styles": "^1.0.0-alpha.10",
     "@essentials/benchmark": "^1.0.7",
     "@semantic-release/changelog": "^6.0.0",
     "@semantic-release/git": "^10.0.0",
