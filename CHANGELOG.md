@@ -1,3 +1,26 @@
+# [1.0.0](https://github.com/dash-ui/responsive/compare/v0.2.3...v1.0.0) (2022-06-25)
+
+### Bug Fixes
+
+- add numeric variants ([0901321](https://github.com/dash-ui/responsive/commit/0901321959553846e1b66a6a49063db884837483))
+- fix key setting ([931da36](https://github.com/dash-ui/responsive/commit/931da36dc5e216ae06b9a7111a488fa3d58b46f2))
+- remove alpha version from peer deps ([251e7fc](https://github.com/dash-ui/responsive/commit/251e7fc61c30838ca2c4d482034515105fe4c192))
+- update mq dependency ([92d3ade](https://github.com/dash-ui/responsive/commit/92d3adeb492faae7e8741a93890b153a579fe4f7))
+
+### Features
+
+- release v1 ([8560987](https://github.com/dash-ui/responsive/commit/8560987350081ddd96b68e6c947b3058a65aefec))
+- update api and types to match latest dash alpha ([a2e1635](https://github.com/dash-ui/responsive/commit/a2e1635826c6919b84a3bea7f0a85065b711e9fd))
+
+### Performance Improvements
+
+- improve variants/one/lazy perf ([22e845a](https://github.com/dash-ui/responsive/commit/22e845a074e87a172fb89fb739efdc22c201e6d5))
+
+### BREAKING CHANGES
+
+- responsive() no longer returns a function, it returns an object. The function it
+  used to return is now on the "variants" property.
+
 # [1.0.0-alpha.6](https://github.com/dash-ui/responsive/compare/v1.0.0-alpha.5...v1.0.0-alpha.6) (2022-06-25)
 
 ### Bug Fixes
