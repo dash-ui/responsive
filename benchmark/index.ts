@@ -1,14 +1,28 @@
 import { styles } from "@dash-ui/styles";
-import bench from "@essentials/benchmark";
+import bench_ from "@essentials/benchmark";
 // eslint-disable-next-line
 import responsive from "../dist/module";
+
+function bench(name: string, callback: () => void) {
+  bench_(name, ({ duration }) => {
+    duration(1000);
+    return callback;
+  });
+}
 
 const responsiveStyle = responsive(styles, {
   sm: "only screen and (min-width: 20em)",
   md: "only screen and (min-width: 50em)",
 });
 
-const responsiveA = responsiveStyle({
+const responsiveA = responsiveStyle.variants({
+  md: {
+    width: 400,
+    height: 800,
+  },
+});
+
+const responsiveAD = responsiveStyle.variants({
   default: {
     width: 200,
     height: 600,
@@ -19,15 +33,23 @@ const responsiveA = responsiveStyle({
   },
 });
 
-bench("normal variant", () => {
+bench("normal variant w/o default", () => {
   responsiveA("md");
+});
+
+bench("normal variant w/ default", () => {
+  responsiveAD("md");
 });
 
 bench(`responsive variant`, () => {
   responsiveA({ sm: "md" });
 });
 
-const responsiveB = responsiveStyle({
+bench("responsive variant w/ default", () => {
+  responsiveAD({ sm: "md" });
+});
+
+const responsiveB = responsiveStyle.variants({
   default: `
     width: 200px;
     height: 600px;
@@ -46,7 +68,7 @@ bench(`responsive variant [string]`, () => {
   responsiveB({ sm: "md" });
 });
 
-const responsiveC = responsiveStyle((queryValue) => {
+const responsiveC = responsiveStyle.lazy((queryValue) => {
   if (queryValue === "md") {
     return `
       width: 400px;
@@ -60,15 +82,15 @@ const responsiveC = responsiveStyle((queryValue) => {
     `;
 });
 
-bench("normal variant [callback]", () => {
+bench("normal lazy [callback]", () => {
   responsiveC("md");
 });
 
-bench(`responsive variant [callback]`, () => {
+bench(`responsive lazy [callback]`, () => {
   responsiveC({ sm: "md" });
 });
 
-const responsiveD = responsiveStyle((queryValue) => {
+const responsiveD = responsiveStyle.lazy((queryValue) => {
   if (queryValue === "md") {
     return {
       width: 400,
@@ -82,10 +104,25 @@ const responsiveD = responsiveStyle((queryValue) => {
   };
 });
 
-bench("normal variant [callback obj]", () => {
+bench("lazy variant [callback obj]", () => {
   responsiveD("md");
 });
 
-bench(`responsive variant [callback obj]`, () => {
+bench(`responsive lazy variant [callback obj]`, () => {
   responsiveD({ sm: "md" });
+});
+
+const responsiveE = responsiveStyle.one(() => {
+  return {
+    width: 200,
+    height: 600,
+  };
+});
+
+bench("normal one [callback obj]", () => {
+  responsiveE();
+});
+
+bench(`responsive one [callback obj]`, () => {
+  responsiveE({ sm: true });
 });

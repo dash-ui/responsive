@@ -16,6 +16,22 @@ exports[`responsive() should insert class into the dom: inline-block 1`] = `
 </style>
 `;
 
+exports[`responsive() should work insert into dom with nested objects: block 1`] = `
+<style
+  data-dash="ui"
+>
+  .ui-7qo3wy{display:block;}
+</style>
+`;
+
+exports[`responsive() should work insert into dom with nested objects: inline-block+flex 1`] = `
+<style
+  data-dash="ui"
+>
+  @media only screen and (min-width:0em){.ui-7qo3wy{display:inline-block;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}}
+</style>
+`;
+
 exports[`responsive.cls() should act like a callback style 1`] = `
 <style
   data-dash="ui"
