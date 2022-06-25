@@ -1,3 +1,9 @@
+# [1.0.0-alpha.6](https://github.com/dash-ui/responsive/compare/v1.0.0-alpha.5...v1.0.0-alpha.6) (2022-06-25)
+
+### Bug Fixes
+
+- remove alpha version from peer deps ([16e6247](https://github.com/dash-ui/responsive/commit/16e6247256322d9edc7b4ce27e415d58f8f9d4ad))
+
 # [1.0.0-alpha.5](https://github.com/dash-ui/responsive/compare/v1.0.0-alpha.4...v1.0.0-alpha.5) (2021-10-31)
 
 ### Performance Improvements
