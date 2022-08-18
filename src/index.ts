@@ -17,14 +17,17 @@ function responsive<
   Tokens extends DashTokens,
   Themes extends DashThemes,
   MQ extends Record<string, string>
->(styles: Styles<Tokens, Themes>, mediaQueries: MQ) {
+>(
+  styles: Styles<Tokens, Themes>,
+  mediaQueries: MQ
+): ResponsiveStyles<Tokens, Themes, MQ> {
   const mediaQueryKeys = Object.keys(mediaQueries) as Extract<
     keyof MQ,
     string | number
   >[];
   const numMediaQueryKeys = mediaQueryKeys.length;
 
-  function isMediaQuery(variant: Record<string | number, any>) {
+  function isMediaQuery(variant: Record<string | number, any>): boolean {
     for (let i = 0; i < numMediaQueryKeys; i++)
       if (variant[mediaQueryKeys[i]] !== void 0) return true;
 
@@ -46,7 +49,7 @@ function responsive<
       );
       const defaultCss = style.css();
 
-      function css() {
+      function css(): string {
         const variants = arguments as unknown as ResponsiveStyleArguments<
           Variant,
           MQ
@@ -134,7 +137,7 @@ function responsive<
         return cachedOne();
       };
 
-      responsiveLazy.css = (variant) => {
+      responsiveLazy.css = (variant): string => {
         if (
           typeof variant === "object" &&
           variant !== null &&
@@ -188,7 +191,7 @@ function responsive<
         }
       };
 
-      responsiveOne.css = (createCss) => {
+      responsiveOne.css = (createCss): string => {
         if (typeof createCss === "object" && createCss !== null) {
           // Media queries
           let css = "";
@@ -246,7 +249,7 @@ function responsive<
     : responsiveStyles;
 }
 
-function fastStringify(obj: Record<string, unknown>) {
+function fastStringify(obj: Record<string, unknown>): string {
   let key = "";
   for (const k in obj)
     key +=

@@ -78,7 +78,10 @@
   "eslintConfig": {
     "extends": [
       "lunde"
-    ]
+    ],
+    "rules": {
+      "@typescript-eslint/explicit-function-return-type": "warn"
+    }
   },
   "eslintIgnore": [
     "node_modules",
