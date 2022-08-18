@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/dash-ui/responsive/compare/v1.0.0...v1.0.1) (2022-08-18)
+
+### Bug Fixes
+
+- add explicit function return types ([#2](https://github.com/dash-ui/responsive/issues/2)) ([15f82ba](https://github.com/dash-ui/responsive/commit/15f82baf056cbebcae8a8f7436fe24b226501dc7))
+
 # [1.0.0](https://github.com/dash-ui/responsive/compare/v0.2.3...v1.0.0) (2022-06-25)
 
 ### Bug Fixes

@@ -16,7 +16,7 @@ declare function responsive<
 >(
   styles: Styles<Tokens, Themes>,
   mediaQueries: MQ
-): Readonly<ResponsiveStyles<Tokens, Themes, MQ>>;
+): ResponsiveStyles<Tokens, Themes, MQ>;
 export interface ResponsiveStyles<
   Tokens extends DashTokens,
   Themes extends DashThemes,
